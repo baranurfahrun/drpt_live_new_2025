@@ -1,0 +1,1 @@
+create antrian_pr (kd int(11) primary key, noantrian varchar(50), posdate datetime);

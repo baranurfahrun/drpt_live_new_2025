@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+    font-family: Helvetica, Times New Roman, sans-serif;
+    background:url(gambar.jpg);
+    background-position: top center;
+    background-repeat:no-repeat;
+    background-size:100%;
+}
+
+a{
+    text-decoration:none;
+    color:#FFF;
+}
+
+a:hover{
+    text-decoration:none;
+    color:#FF0;
+}
+
+.kontainer{
+    margin-top:10px;
+    margin-bottom:10px;
+    font-size:56px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.kontainer3{
+    margin-top:10px;
+    margin-bottom:10px;
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+}
+.kontainer2{
+    font-size:15px;
+    font-weight:bold;
+    text-align:center;
+    position:center;
+}
+
+#konter{
+    -moz-border-radius : 15px 15px 15px 15px ;
+    -webkit-border-radius : 15px 15px 15px 15px;
+    width:300px;
+    background-color:#f5dd42;
+    padding:10px;
+
+
+}
+.kop {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 24px;
+    color: #FFFFFF;
+}
+#wrapper {
+    width: 840px;
+    margin: 0 auto;
+}
+#wrappe2 {
+    width: 480px;
+    margin: 0 auto;
+}
+#wrapper3 {
+    width: 520px;
+    margin: 0 auto;
+}

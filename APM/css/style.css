@@ -1,0 +1,94 @@
+html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      }
+.style6 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 24px;
+}
+body {
+	background-image: url(image/latar6.png);
+}
+body,td,th {
+	font-family: Georgia, Times New Roman, Times, serif;
+}
+.style8 {font-size: 36px}
+.style9 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 30px; color:#FFFFFF; }
+.style10 {
+	font-size: 18px;
+	font-weight: bold;
+}
+.style12 {font-size: 100px}
+.style13 {font-family: "Times New Roman", Times, serif}
+.style17 {font-size: 18px; color:#FFFFFF;}
+.kotak{
+	background:#f25c05;
+	padding: 20px;
+	width: 270px;
+	float: center;
+	margin: 10px;
+	height: 120px;		
+}
+ 
+.kotak1{
+	border-radius: 15px 15px 15px 15px;
+
+	}
+.kotak2{
+	background: #0597f2;
+	width: 600px;
+	float: center;
+	height: 500px;	
+	
+	
+}
+.kotak2a{
+	background:  #0597f2;
+	color: #FFFFFF;
+	font-size: 36px;
+	padding: 0px;
+	width: 600px;
+	float: center;
+	margin: 0px;
+	height: 590px;		
+}
+
+.kotak2aa{
+	background:  #f25c05;
+	color: #FFFFFF;
+	font-size: 36px;
+	padding: 0px;
+	width: 600px;
+	float: center;
+	margin: 0px;
+	height: 590px;		
+}
+.kotak2b{
+	background: #0597f2;
+	color: #FFFFFF;
+	font-size: 36px;
+	padding: 0px;
+	width: 100%;
+	float: center;
+	margin: 0px;
+	height:60px;	
+    border-radius: 3px;
+    
+}
+
+.kotak2c{
+	
+	padding: 0px;
+	width: 30px;
+	float: center;
+	margin: 0px;
+	height: 100px;
+			
+}
+ 
+.kotak22{
+	border-radius: 10px 10px 10px 10px;
+	}	
+.style15 {font-family: Arial, Helvetica, sans-serif}
+.style20 {font-size: 18px}

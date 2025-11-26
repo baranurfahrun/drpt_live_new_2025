@@ -1,0 +1,46 @@
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+<h4>A PHP Error was encountered</h4>
+
+<p>Severity: Notice</p>
+<p>Message:  Trying to get property 'sign_image' of non-object</p>
+<p>Filename: controllers/Tte.php</p>
+<p>Line Number: 186</p>
+
+
+	<p>Backtrace:</p>
+	
+		
+	
+		
+	
+		
+			<p style="margin-left:10px">
+			File: C:\xampp\htdocs\api_gateway\application\modules\v1\controllers\Tte.php<br />
+			Line: 186<br />
+			Function: _error_handler			</p>
+
+		
+	
+		
+			<p style="margin-left:10px">
+			File: C:\xampp\htdocs\api_gateway\application\libraries\REST_Controller.php<br />
+			Line: 793<br />
+			Function: signfileV1_post			</p>
+
+		
+	
+		
+	
+		
+			<p style="margin-left:10px">
+			File: C:\xampp\htdocs\api_gateway\index.php<br />
+			Line: 289<br />
+			Function: require_once			</p>
+
+		
+	
+
+</div>
