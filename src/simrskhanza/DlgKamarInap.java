@@ -17675,7 +17675,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                             rs2 = psanak.executeQuery();
                             if (rs2.next()) {
                                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                RMDataResumePasienRanap resume = new RMDataResumePasienRanap(new javax.swing.JFrame(), true);
+                                RMDataResumePasienRanap resume = new RMDataResumePasienRanap(null, false);
                                 resume.isCek();
                                 resume.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                                 resume.setLocationRelativeTo(internalFrame1);
@@ -17708,7 +17708,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     }
                 } else {
                     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                    RMDataResumePasienRanap resume = new RMDataResumePasienRanap(new javax.swing.JFrame(), true);
+                    RMDataResumePasienRanap resume = new RMDataResumePasienRanap(null, false);
                     resume.isCek();
                     resume.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                     resume.setLocationRelativeTo(internalFrame1);

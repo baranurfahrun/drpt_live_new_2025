@@ -4321,7 +4321,14 @@ public final class RMDataResumePasienRanap extends javax.swing.JDialog {
             KodeDiagnosaSekunder5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
             DiagnosaSekunder6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
             KodeDiagnosaSekunder6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
-            // Skip columns 36-43: diagnosa_sekunder7-10 (tidak ada field di form)
+            DiagnosaSekunder7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            KodeDiagnosaSekunder7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            DiagnosaSekunder8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            KodeDiagnosaSekunder8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            DiagnosaSekunder9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            KodeDiagnosaSekunder9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            DiagnosaSekunder10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            KodeDiagnosaSekunder10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
             ProsedurUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
             KodeProsedurUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
             ProsedurSekunder1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
@@ -4334,7 +4341,16 @@ public final class RMDataResumePasienRanap extends javax.swing.JDialog {
             KodeProsedurSekunder4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 53).toString());
             ProsedurSekunder5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 54).toString());
             KodeProsedurSekunder5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 55).toString());
-            // Skip columns 56-65: prosedur_sekunder6-10 (tidak ada field di form)
+            ProsedurSekunder6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 56).toString());
+            KodeProsedurSekunder6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 57).toString());
+            ProsedurSekunder7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString());
+            KodeProsedurSekunder7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 59).toString());
+            ProsedurSekunder8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString());
+            KodeProsedurSekunder8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 61).toString());
+            ProsedurSekunder9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString());
+            KodeProsedurSekunder9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 63).toString());
+            ProsedurSekunder10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString());
+            KodeProsedurSekunder10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 65).toString());
             Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 66).toString());
             Diet.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 67).toString());
             LabBelum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 68).toString());
@@ -4345,12 +4361,16 @@ public final class RMDataResumePasienRanap extends javax.swing.JDialog {
             KetKeluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 73).toString());
             DIlanjutkan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 74).toString());
             KetDilanjutkan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 75).toString());
-            ObatPulang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 77).toString());
-            ObatPulang1.setText("");  // ObatPulang1 dikosongkan, user bisa isi manual jika perlu
+            // Ambil obat_pulang1 dari database dan trim untuk menghilangkan newline di awal
+            String obatPulangValue = tbObat.getValueAt(tbObat.getSelectedRow(), 77) != null ?
+                tbObat.getValueAt(tbObat.getSelectedRow(), 77).toString().trim() : "";
+            ObatPulang.setText(obatPulangValue);
+            ObatPulang1.setText(obatPulangValue);  // Set ke ObatPulang1 juga (sesuai nama kolom database)
+            AsesmenKlinikTerakhir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 78).toString());
             KdPj.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 79).toString());
             CaraBayar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 80).toString());
             //    AsesmenKlinikTerakhir.setText(Sequel.cariIsi("select penilaian from pemeriksaan_ranap where no_rawat= and nip='"+KodeDokter.getText()+"'order by tgl_perawatan,jam_rawat desc"));
-            AsesmenKlinikTerakhir.setText(Sequel.cariIsi("select penilaian from pemeriksaan_ranap where no_rawat='" + TNoRw.getText() + "' and nip='" + KodeDokter.getText() + "'order by tgl_perawatan,jam_rawat desc"));
+            //    AsesmenKlinikTerakhir.setText(Sequel.cariIsi("select penilaian from pemeriksaan_ranap where no_rawat='" + TNoRw.getText() + "' and nip='" + KodeDokter.getText() + "'order by tgl_perawatan,jam_rawat desc"));
             //    Keluhan.setText(Sequel.cariIsi("select concat(keluhan,'\n',pemeriksaan)as keluhan from pemeriksaan_ralan where no_rawat='"+TNoRw.getText()+"' and nip='"+KodeDokter.getText()+"'"));
             Valid.SetTgl2(Kontrol, tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString());
             Valid.SetTgl2(Kontrol1, tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString());
