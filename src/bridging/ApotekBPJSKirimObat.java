@@ -9,6 +9,7 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
+
 package bridging;
 
 import inventory.*;
@@ -51,32 +52,31 @@ import widget.Button;
  * @author dosen
  */
 public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
-
-    private final DefaultTableModel tabModeobat, tabModeObatRacikan, tabModeDetailObatRacikan;
-    private sekuel Sequel = new sekuel();
-    private validasi Valid = new validasi();
-    private Connection koneksi = koneksiDB.condb();
-    private PreparedStatement psobat, psracikan, psstok, ps2, psbatch, psrekening, psobatracikan, psdiagnosa;
-    private ResultSet rsobat, rsracikan, rsstok, rs2, rsbatch, rsrekening, rscariobat, rsdiagnosa, rsobatracikan;
-    private double h_belicari = 0, hargacari = 0, sisacari = 0, x = 0, y = 0, embalase = Sequel.cariIsiAngka("select set_embalase.embalase_per_obat from set_embalase"),
-            tuslah = Sequel.cariIsiAngka("select set_embalase.tuslah_per_obat from set_embalase"), kenaikan = 0, stokbarang = 0, ttl = 0, ppnobat = 0, ttlhpp, ttljual, Hari = 0;
-    private int i = 0, z = 0, row = 0, row2, r, subttl;
-    private Jurnal jur = new Jurnal();
-    private boolean[] pilih;
-    private double[] jumlah, harga, eb, ts, stok, beli, kapasitas, kandungan;
-    private String[] kodebarang, namabarang, kodesatuan, letakbarang, namajenis, aturan, industri, kategori, golongan, no, nobatch, nofaktur, kadaluarsa, keterangan, signa_cari1, signa_cari2, signa_racikan1, signa_racikan2;
-    private String no_apotek = "", signa1 = "1", utc = "", pesan = "", link = koneksiDB.URLAPIAPOTEKBPJS(), signa2 = "1", nokunjungan = "", kdObatSK = "", requestJson = "", URL = "", otorisasi, sql = "", aktifpcare = "no", no_batchcari = "", tgl_kadaluarsacari = "", no_fakturcari = "", aktifkanbatch = "no", kodedokter = "", namadokter = "", noresep = "", bangsal = "", bangsaldefault = Sequel.cariIsi("select set_lokasi.kd_bangsal from set_lokasi limit 1"), tampilkan_ppnobat_ralan = "",
-            Suspen_Piutang_Obat_Ralan = "", Obat_Ralan = "", HPP_Obat_Rawat_Jalan = "", Persediaan_Obat_Rawat_Jalan = "", hppfarmasi = "", VALIDASIULANGBERIOBAT = "", DEPOAKTIFOBAT = "", NORESEPAKTIF = "no", diagnosa_pasien, no_claim, ObatRutin,
-            sqlpscariobat2 = "select databarang.nama_brng,jenis.nama,detail_pemberian_obat.biaya_obat, detail_pemberian_obat.jml, detail_pemberian_obat.total, databarang.kode_brng, aturan_pakai.aturan "
-            + "from detail_pemberian_obat inner join databarang inner join jenis on detail_pemberian_obat.kode_brng=databarang.kode_brng and databarang.kdjns=jenis.kdjns LEFT JOIN aturan_pakai ON detail_pemberian_obat.no_rawat=aturan_pakai.no_rawat AND "
-            + "databarang.kode_brng=aturan_pakai.kode_brng and detail_pemberian_obat.jam=aturan_pakai.jam where detail_pemberian_obat.no_rawat=? and detail_pemberian_obat.tgl_perawatan=? AND detail_pemberian_obat.jam=? group by detail_pemberian_obat.kode_brng order by jenis.nama";
-    private DlgCariBangsal caribangsal = new DlgCariBangsal(null, false);
-    public DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
-    private DlgCariMetodeRacik metoderacik = new DlgCariMetodeRacik(null, false);
-    private WarnaTable2 warna = new WarnaTable2();
-    private WarnaTable2 warna2 = new WarnaTable2();
-    private WarnaTable2 warna3 = new WarnaTable2();
-    private riwayatobat Trackobat = new riwayatobat();
+    private final DefaultTableModel tabModeobat,tabModeObatRacikan,tabModeDetailObatRacikan;
+    private sekuel Sequel=new sekuel();
+    private validasi Valid=new validasi();
+    private Connection koneksi=koneksiDB.condb();
+    private PreparedStatement psobat,psracikan,psstok,ps2,psbatch,psrekening,psobatracikan,psdiagnosa;
+    private ResultSet rsobat,rsracikan,rsstok,rs2,rsbatch,rsrekening,rscariobat,rsdiagnosa,rsobatracikan;
+    private double h_belicari=0, hargacari=0, sisacari=0,x=0,y=0,embalase=Sequel.cariIsiAngka("select set_embalase.embalase_per_obat from set_embalase"),
+                   tuslah=Sequel.cariIsiAngka("select set_embalase.tuslah_per_obat from set_embalase"),kenaikan=0,stokbarang=0,ttl=0,ppnobat=0,ttlhpp,ttljual,Hari=0;
+    private int i=0,z=0,row=0,row2,r,subttl;
+    private Jurnal jur=new Jurnal();
+    private boolean[] pilih; 
+    private double[] jumlah,harga,eb,ts,stok,beli,kapasitas,kandungan;
+    private String[] kodebarang,namabarang,kodesatuan,letakbarang,namajenis,aturan,industri,kategori,golongan,no,nobatch,nofaktur,kadaluarsa,keterangan,signa_cari1,signa_cari2,signa_racikan1,signa_racikan2;
+    private String no_apotek="",signa1="1",utc="",pesan="",link=koneksiDB.URLAPIAPOTEKBPJS(),signa2="1",nokunjungan="",kdObatSK="",requestJson="",URL="",otorisasi,sql="",aktifpcare="no",no_batchcari="", tgl_kadaluarsacari="", no_fakturcari="", aktifkanbatch="no",kodedokter="",namadokter="",noresep="",bangsal="",bangsaldefault=Sequel.cariIsi("select set_lokasi.kd_bangsal from set_lokasi limit 1"),tampilkan_ppnobat_ralan="",
+        Suspen_Piutang_Obat_Ralan="",Obat_Ralan="",HPP_Obat_Rawat_Jalan="",Persediaan_Obat_Rawat_Jalan="",hppfarmasi="",VALIDASIULANGBERIOBAT="",DEPOAKTIFOBAT="",NORESEPAKTIF="no",diagnosa_pasien, no_claim,ObatRutin,
+        sqlpscariobat2="select databarang.nama_brng,jenis.nama,detail_pemberian_obat.biaya_obat, detail_pemberian_obat.jml, detail_pemberian_obat.total, databarang.kode_brng, aturan_pakai.aturan "
+                        + "from detail_pemberian_obat inner join databarang inner join jenis on detail_pemberian_obat.kode_brng=databarang.kode_brng and databarang.kdjns=jenis.kdjns LEFT JOIN aturan_pakai ON detail_pemberian_obat.no_rawat=aturan_pakai.no_rawat AND "
+                        + "databarang.kode_brng=aturan_pakai.kode_brng and detail_pemberian_obat.jam=aturan_pakai.jam where detail_pemberian_obat.no_rawat=? and detail_pemberian_obat.tgl_perawatan=? AND detail_pemberian_obat.jam=? group by detail_pemberian_obat.kode_brng order by jenis.nama";
+    private DlgCariBangsal caribangsal=new DlgCariBangsal(null,false);
+    public DlgCariAturanPakai aturanpakai=new DlgCariAturanPakai(null,false);
+    private DlgCariMetodeRacik metoderacik=new DlgCariMetodeRacik(null,false);
+    private WarnaTable2 warna=new WarnaTable2();
+    private WarnaTable2 warna2=new WarnaTable2();
+    private WarnaTable2 warna3=new WarnaTable2();
+    private riwayatobat Trackobat=new riwayatobat();
     private HttpHeaders headers;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
@@ -84,338 +84,305 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
     private JsonNode nameNode;
     private JsonNode response;
     private String[] arrSplit;
-    private boolean sukses = true;
+    private boolean sukses=true;
     private ApotekBPJSCekReferensiDPHO refobatbpjs = new ApotekBPJSCekReferensiDPHO(null, false);
     private ApiApotekBPJS api = new ApiApotekBPJS();
-
-    /**
-     * Creates new form DlgPenyakit
-     *
+    
+    /** Creates new form DlgPenyakit
      * @param parent
-     * @param modal
-     */
+     * @param modal */
     public ApotekBPJSKirimObat(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10, 2);
-        setSize(656, 250);
+        this.setLocation(10,2);
+        setSize(656,250);
 
-        tabModeobat = new DefaultTableModel(null, new Object[]{
-            "K", "Jumlah", "Kode Barang", "Nama Barang", "Signa 1", "Signa 2", "Jumlah Hari"
-        }) {
-            @Override
-            public boolean isCellEditable(int rowIndex, int colIndex) {
+        tabModeobat=new DefaultTableModel(null,new Object[]{
+                "K","Jumlah","Kode Barang","Nama Barang","Signa 1","Signa 2","Jumlah Hari"
+            }){
+            @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = false;
-                if ((colIndex == 0) || (colIndex == 4) || (colIndex == 5) || (colIndex == 6)) {
-                    a = true;
+                if ((colIndex==0) || (colIndex==4) || (colIndex==5) || (colIndex==6)) {
+                    a=true;
                 }
                 return a;
-            }
-
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+             }
+            
+             Class[] types = new Class[] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
+             };
+             
+             @Override
+             public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+             }
         };
-
+        
         tbObat.setModel(tabModeobat);
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (i = 0; i < 7; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if (i == 0) {
+            if(i==0){
                 try {
-                    ps2 = koneksi.prepareStatement("select kode_ppk from setting");
+                    ps2=koneksi.prepareStatement("select kode_ppk from setting");
 
                     try {
-                        rs2 = ps2.executeQuery();
+                        rs2=ps2.executeQuery();
                         rs2.next();
 
-                        if (rs2.getString("kode_ppk").equals("0090R034")) {
+                        if(rs2.getString("kode_ppk").equals("0090R034")){
                             column.setPreferredWidth(20);
-                        } else {
+                        }else {
                             column.setMinWidth(0);
                             column.setMaxWidth(0);
                         }
 
                     } catch (Exception e) {
-                        System.out.println("Notif : " + rs2);
-                    } finally {
-                        rs2.close();
+                        System.out.println("Notif : "+rs2);
+                    } finally{
+                        rs2.close();  
                     }
 
                 } catch (Exception e) {
-                    System.out.println("Notif : " + rs2);
+                    System.out.println("Notif : "+rs2);
                 }
-            } else if (i == 1) {
+            }else if(i==1){
                 column.setPreferredWidth(45);
-            } else if (i == 2) {
+            }else if(i==2){
                 column.setPreferredWidth(75);
-            } else if (i == 3) {
+            }else if(i==3){
                 column.setPreferredWidth(200);
-            } else if (i == 4) {
+            }else if(i==4){
                 column.setPreferredWidth(50);
-            } else if (i == 5) {
+            }else if(i==5){
                 column.setPreferredWidth(50);
-            } else if (i == 6) {
+            }else if(i==6){
                 column.setPreferredWidth(100);
-            }
+            }            
         }
-        warna.kolom = 1;
-        tbObat.setDefaultRenderer(Object.class, warna);
-
-        tabModeObatRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Nama Racikan", "Kode Racik", "Metode Racik", "Jml.Racik",
-            "Aturan Pakai", "Keterangan"
-        }) {
-            @Override
-            public boolean isCellEditable(int rowIndex, int colIndex) {
+        warna.kolom=1;
+        tbObat.setDefaultRenderer(Object.class,warna);
+        
+        tabModeObatRacikan=new DefaultTableModel(null,new Object[]{
+                "No","Nama Racikan","Kode Racik","Metode Racik","Jml.Racik",
+                "Aturan Pakai","Keterangan"
+            }){
+             @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = true;
 //                if ((colIndex==0)||(colIndex==2)||(colIndex==3)) {
 //                    a=false;
 //                }
                 return a;
-            }
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+             }
+             Class[] types = new Class[] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
+             };
+             @Override
+             public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+             }
         };
 
         tbObatRacikan.setModel(tabModeObatRacikan);
-        tbObatRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
-        tbObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
+        tbObatRacikan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);        
+        
         for (i = 0; i < 7; i++) {
             TableColumn column = tbObatRacikan.getColumnModel().getColumn(i);
-            if (i == 0) {
+            if(i==0){
                 column.setPreferredWidth(25);
-            } else if (i == 1) {
+            }else if(i==1){
                 column.setPreferredWidth(250);
-            } else if (i == 2) {
+            }else if(i==2){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            } else if (i == 3) {
+            }else if(i==3){
                 column.setPreferredWidth(100);
-            } else if (i == 4) {
+            }else if(i==4){
                 column.setPreferredWidth(60);
-            } else if (i == 5) {
+            }else if(i==5){
                 column.setPreferredWidth(200);
-            } else if (i == 6) {
+            }else if(i==6){
                 column.setPreferredWidth(250);
             }
         }
 
-        warna2.kolom = 4;
-        tbObatRacikan.setDefaultRenderer(Object.class, warna2);
-
-        tabModeDetailObatRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Jumlah", "Kode Barang", "Nama Barang", "Signa 1", "Signa 2", "Jumlah Hari", "Dosis/Sediaan"
-        }) {
-            @Override
-            public boolean isCellEditable(int rowIndex, int colIndex) {
+        warna2.kolom=4;
+        tbObatRacikan.setDefaultRenderer(Object.class,warna2);
+        
+        tabModeDetailObatRacikan=new DefaultTableModel(null,new Object[]{
+                "No","Jumlah","Kode Barang","Nama Barang","Signa 1","Signa 2","Jumlah Hari","Dosis/Sediaan"
+            }){
+             @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = false;
-                if ((colIndex == 0) || (colIndex == 4) || (colIndex == 5) || (colIndex == 6)) {
-                    a = true;
+                if ((colIndex==0) || (colIndex==4) || (colIndex==5) || (colIndex==6)) {
+                    a=true;
                 }
                 return a;
-            }
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+             }
+             Class[] types = new Class[] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
+             };
+             @Override
+             public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+             }
         };
 
         tbDetailObatRacikan.setModel(tabModeDetailObatRacikan);
-        tbDetailObatRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
-        tbDetailObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
+        tbDetailObatRacikan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbDetailObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);        
+        
         for (i = 0; i < 8; i++) {
             TableColumn column = tbDetailObatRacikan.getColumnModel().getColumn(i);
-            if (i == 0) {
+            if(i==0){
                 column.setPreferredWidth(25);
-            } else if (i == 1) {
+            }else if(i==1){
                 column.setPreferredWidth(40);
-            } else if (i == 2) {
+            }else if(i==2){
                 column.setPreferredWidth(100);
-            } else if (i == 3) {
+            }else if(i==3){
                 column.setPreferredWidth(200);
-            } else if (i == 4) {
+            }else if(i==4){
                 column.setPreferredWidth(50);
-            } else if (i == 5) {
+            }else if(i==5){
                 column.setPreferredWidth(50);
-            } else if (i == 6) {
+            }else if(i==6){
                 column.setPreferredWidth(100);
-            } else if (i == 7) {
+            }else if(i==7){
                 column.setPreferredWidth(100);
-            }
+            }   
         }
 
-        warna3.kolom = 9;
-        tbDetailObatRacikan.setDefaultRenderer(Object.class, warna3);
-
+        warna3.kolom=9;
+        tbDetailObatRacikan.setDefaultRenderer(Object.class,warna3);
+        
+               
         aturanpakai.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
+            public void windowOpened(WindowEvent e) {}
             @Override
-            public void windowClosing(WindowEvent e) {
-            }
-
+            public void windowClosing(WindowEvent e) {}
             @Override
             public void windowClosed(WindowEvent e) {
-                if (aturanpakai.getTable().getSelectedRow() != -1) {
-                    if (TabRawat.getSelectedIndex() == 0) {
-                        tbObat.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(), 0).toString(), tbObat.getSelectedRow(), 11);
+                if(aturanpakai.getTable().getSelectedRow()!= -1){  
+                    if(TabRawat.getSelectedIndex()==0){
+                        tbObat.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(),0).toString(),tbObat.getSelectedRow(),11);
                         tbObat.requestFocus();
-                    } else if (TabRawat.getSelectedIndex() == 1) {
-                        tbObatRacikan.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(), 0).toString(), tbObatRacikan.getSelectedRow(), 5);
+                    }else if(TabRawat.getSelectedIndex()==1){
+                        tbObatRacikan.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(),0).toString(),tbObatRacikan.getSelectedRow(),5);
                         tbObatRacikan.requestFocus();
-                    }
-                }
+                    }                        
+                }   
             }
-
             @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
+            public void windowIconified(WindowEvent e) {}
             @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
+            public void windowDeiconified(WindowEvent e) {}
             @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
+            public void windowActivated(WindowEvent e) {}
             @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
+            public void windowDeactivated(WindowEvent e) {}
         });
-
+        
         metoderacik.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
+            public void windowOpened(WindowEvent e) {}
             @Override
-            public void windowClosing(WindowEvent e) {
-            }
-
+            public void windowClosing(WindowEvent e) {}
             @Override
             public void windowClosed(WindowEvent e) {
-                if (metoderacik.getTable().getSelectedRow() != -1) {
-                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 1).toString(), tbObatRacikan.getSelectedRow(), 2);
-                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 2).toString(), tbObatRacikan.getSelectedRow(), 3);
-                }
+                if(metoderacik.getTable().getSelectedRow()!= -1){  
+                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(),1).toString(),tbObatRacikan.getSelectedRow(),2);
+                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(),2).toString(),tbObatRacikan.getSelectedRow(),3);
+                }  
             }
-
             @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
+            public void windowIconified(WindowEvent e) {}
             @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
+            public void windowDeiconified(WindowEvent e) {}
             @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
+            public void windowActivated(WindowEvent e) {}
             @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
+            public void windowDeactivated(WindowEvent e) {}
         });
-
+        
         metoderacik.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
+            public void keyTyped(KeyEvent e) {}
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
                     metoderacik.dispose();
                 }
             }
-
             @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
-
+            public void keyReleased(KeyEvent e) {}
+        }); 
+        
         try {
-            hppfarmasi = koneksiDB.HPPFARMASI();
+            hppfarmasi=koneksiDB.HPPFARMASI();
         } catch (Exception e) {
-            hppfarmasi = "dasar";
+            hppfarmasi="dasar";
         }
-
+        
         try {
-            VALIDASIULANGBERIOBAT = koneksiDB.VALIDASIULANGBERIOBAT();
+            VALIDASIULANGBERIOBAT=koneksiDB.VALIDASIULANGBERIOBAT();
         } catch (Exception e) {
-            VALIDASIULANGBERIOBAT = "no";
+            VALIDASIULANGBERIOBAT="no";
         }
-
+        
 //        try {
 //            DEPOAKTIFOBAT = koneksiDB.DEPOAKTIFOBAT();
 //        } catch (Exception e) {
 //            System.out.println("E : "+e);
 //            DEPOAKTIFOBAT = "";
 //        }
+        
         try {
-            psrekening = koneksi.prepareStatement("select * from set_akun_ralan");
+            psrekening=koneksi.prepareStatement("select * from set_akun_ralan");
             try {
-                rsrekening = psrekening.executeQuery();
-                while (rsrekening.next()) {
-                    Suspen_Piutang_Obat_Ralan = rsrekening.getString("Suspen_Piutang_Obat_Ralan");
-                    Obat_Ralan = rsrekening.getString("Obat_Ralan");
-                    HPP_Obat_Rawat_Jalan = rsrekening.getString("HPP_Obat_Rawat_Jalan");
-                    Persediaan_Obat_Rawat_Jalan = rsrekening.getString("Persediaan_Obat_Rawat_Jalan");
+                rsrekening=psrekening.executeQuery();
+                while(rsrekening.next()){
+                    Suspen_Piutang_Obat_Ralan=rsrekening.getString("Suspen_Piutang_Obat_Ralan");
+                    Obat_Ralan=rsrekening.getString("Obat_Ralan");
+                    HPP_Obat_Rawat_Jalan=rsrekening.getString("HPP_Obat_Rawat_Jalan");
+                    Persediaan_Obat_Rawat_Jalan=rsrekening.getString("Persediaan_Obat_Rawat_Jalan");
                 }
             } catch (Exception e) {
-                System.out.println("Notif Rekening : " + e);
-            } finally {
-                if (rsrekening != null) {
+                System.out.println("Notif Rekening : "+e);
+            } finally{
+                if(rsrekening!=null){
                     rsrekening.close();
                 }
-                if (psrekening != null) {
+                if(psrekening!=null){
                     psrekening.close();
                 }
-            }
+            }            
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
         try {
 //            NORESEPAKTIF=koneksiDB.NORESEPAKTIF();
         } catch (Exception e) {
-            NORESEPAKTIF = "yes";
+            NORESEPAKTIF="yes";
         }
-
-        tampilkan_ppnobat_ralan = Sequel.cariIsi("select set_nota.tampilkan_ppnobat_ralan from set_nota");
+        
+        tampilkan_ppnobat_ralan=Sequel.cariIsi("select set_nota.tampilkan_ppnobat_ralan from set_nota"); 
         jam();
-    }
+    }    
+    
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -637,7 +604,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         Jam.setBounds(510, 130, 180, 24);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06-03-2025" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-02-2025" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -734,7 +701,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         LblNoRawat.setBounds(72, 10, 123, 23);
 
         TanggalPelayanan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPelayanan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06-03-2025" }));
+        TanggalPelayanan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-02-2025" }));
         TanggalPelayanan.setDisplayFormat("dd-MM-yyyy");
         TanggalPelayanan.setName("TanggalPelayanan"); // NOI18N
         TanggalPelayanan.setOpaque(false);
@@ -808,10 +775,10 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         TResep.setBounds(385, 100, 145, 23);
 
         Iterasi.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        Iterasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0. Tanpa Iterasi", "1. Diperbolehkan Iterasi 1x", "2. Diperbolehkan Iterasi 2x" }));
+        Iterasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0. Tanpa Iterasi", "1. Dengan Iterasi" }));
         Iterasi.setName("Iterasi"); // NOI18N
         FormInput.add(Iterasi);
-        Iterasi.setBounds(610, 100, 210, 24);
+        Iterasi.setBounds(610, 100, 110, 24);
 
         jLabel16.setText("Iterasi :");
         jLabel16.setName("jLabel16"); // NOI18N
@@ -979,14 +946,14 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
 
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if (tbObat.getRowCount() != 0) {
+        if(tbObat.getRowCount()!=0){
             try {
                 getDataobat();
             } catch (java.lang.NullPointerException e) {
             }
-
-            if (evt.getClickCount() == 2) {
-                if (akses.getform().equals("DlgPemberianObat")) {
+            
+            if(evt.getClickCount()==2){
+                if(akses.getform().equals("DlgPemberianObat")){
                     dispose();
                 }
             }
@@ -994,7 +961,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-
+        
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void Kd2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Kd2KeyPressed
@@ -1004,24 +971,358 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
         dispose();
     }//GEN-LAST:event_BtnKeluarActionPerformed
-
+    
 private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-    if (TNoRw.getText().trim().equals("")) {
-        Valid.textKosong(TNoRw, "No Rawat");
-    } else if (NoSEP.getText().trim().equals("")) {
-        Valid.textKosong(NoSEP, "Nomor Sep");
-    } else if (KdDPJP.getText().trim().equals("")) {
-        Valid.textKosong(KdDPJP, "Dokter");
-    } else if (KdPoli.getText().trim().equals("")) {
-        Valid.textKosong(KdPoli, "Poliklinik");
-    } else if (TResep.getText().trim().equals("")) {
-        Valid.textKosong(TResep, "Nomor Resep");
-    } else if (Lahir.getText().trim().equals("")) {
-        Valid.textKosong(Lahir, "Lahir");
-    } else {
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Eeiiiiiits, udah bener belum data yang mau disimpan..?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+    if(TNoRw.getText().trim().equals("")){
+        Valid.textKosong(TNoRw,"No Rawat");
+    }else if(NoSEP.getText().trim().equals("")){
+        Valid.textKosong(NoSEP,"Nomor Sep");                                      
+    }else if(KdDPJP.getText().trim().equals("")){
+        Valid.textKosong(KdDPJP,"Dokter");                                      
+    }else if(KdPoli.getText().trim().equals("")){
+        Valid.textKosong(KdPoli,"Poliklinik");                                      
+    }else if(TResep.getText().trim().equals("")){
+        Valid.textKosong(TResep,"Nomor Resep");                                      
+    }else if(Lahir.getText().trim().equals("")){
+        Valid.textKosong(Lahir,"Lahir");                                      
+    }else{
+        int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, udah bener belum data yang mau disimpan..?","Konfirmasi",JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            try {
+            try {  
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("x-timestamp", utc);
+                headers.add("x-signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
+                requestEntity = new HttpEntity(headers);
+                
+
+                if (Iterasi.getSelectedIndex() == 0) {
+                    System.out.println("Tanpa iterasi");
+                    URL = link + "/sjpresep/v3/insert";
+                    System.out.println(URL);
+                    requestJson = "{"
+//                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
+                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+ "\","
+                                    + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
+                                    + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
+                                    + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
+                                    + "\"NORESEP\": \"" + TResep.getText()+ "\", "
+                                    + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
+                                    + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\", "
+                                    + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\","
+                                    + "\"KdDokter\": \"0\","
+                                    + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
+                                + "}  ";
+                    System.out.println("Resep : "+requestJson);
+                    requestEntity = new HttpEntity(requestJson, headers);
+                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                    nameNode = root.path("metaData");
+                    System.out.println("data = "+nameNode);
+                    System.out.println("error = "+nameNode.path("message").asText());
+                    if (!nameNode.path("code").asText().equals("200")) {
+                        JOptionPane.showMessageDialog(null, "ERROR : " + nameNode.path("message").asText());
+                        }
+                    if (nameNode.path("code").asText().equals("200")) {
+                        response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
+                        System.out.println("Response : "+response);
+                        if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
+                            new String[]{
+                                response.path("noSep_Kunjungan").asText(),
+                                response.path("noApotik").asText(),
+                                TResep.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" "+Jam.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+""),
+                                JnsObat.getSelectedItem().toString().substring(0, 1),
+                                Iterasi.getSelectedItem().toString().substring(0, 1),
+                                KdPoli.getText(),
+                                NmPoli.getText(),
+                                KdDPJP.getText(),
+                                NmDPJP.getText(),
+                                akses.getkode(),
+                            }) == true) {
+                                System.out.println("Simpan No Resep Selesai");
+                                JOptionPane.showMessageDialog(null, "Resep Apotek "+response.path("noApotik").asText()+" Berhasil disimpan ");
+                                no_apotek = response.path("noApotik").asText();
+                                URL = link + "/obatnonracikan/v3/insert";
+                                System.out.println(URL);
+                                for(i=0;i<tbObat.getRowCount();i++){ 
+                                    if(Valid.SetAngka(tbObat.getValueAt(i,1).toString())>0){   
+                                        try {
+
+                                            requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + response.path("noApotik").asText() + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbObat.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbObat.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"non racikan\"\n"
+                                                    + "        }     ";
+                                            System.out.println("Detail Obat : "+requestJson);                                            
+                                            requestEntity = new HttpEntity(requestJson, headers);
+                                            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            nameNode = root.path("metaData");
+                                            System.out.println("data = "+nameNode);
+                                            if (nameNode.path("code").asText().equals("200")) {
+                                                if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
+                                                    response.path("noSep_Kunjungan").asText(),
+                                                    TResep.getText(),
+                                                    tbObat.getValueAt(i,2).toString(),
+                                                    tbObat.getValueAt(i,3).toString(),
+                                                    tbObat.getValueAt(i,1).toString(),
+                                                    tbObat.getValueAt(i,4).toString(),
+                                                    tbObat.getValueAt(i,5).toString(),
+                                                    "0",
+                                                    no_apotek
+                                                }) == true) {
+                                                    System.out.println("Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                    JOptionPane.showMessageDialog(null, "Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                }
+                                            }
+                                            else {
+                                                System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                                JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                            }
+                                            System.out.println("non racikan = \n\n"+requestJson);
+                                        } catch (Exception ex) {
+                                            System.out.println("Notifikasi : " + ex);
+                                            if (ex.toString().contains("UnknownHostException")) {
+                                                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                            }
+                                        }            
+                                    }
+                                }
+
+    //                            racikan
+                                URL = link + "/obatracikan/v3/insert";
+                                System.out.println(URL);
+                                for(i=0;i<tbDetailObatRacikan.getRowCount();i++){ 
+                                    if(Valid.SetAngka(tbDetailObatRacikan.getValueAt(i,1).toString())>0){
+                                        try {
+                                            requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + no_apotek + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"JNSROBT\": \"R.0"+(tbDetailObatRacikan.getValueAt(i,0).toString())+"\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i,7).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"RACIKAN "+(i+1)+"\"\n"
+                                                    + "        }     ";
+                                            requestEntity = new HttpEntity(requestJson, headers);
+                                            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            nameNode = root.path("metaData");
+                                            System.out.println("data = "+nameNode);
+                                            if (nameNode.path("code").asText().equals("200")) {
+                                                if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
+                                                    response.path("noSep_Kunjungan").asText(),
+                                                    TResep.getText(),
+                                                    tbDetailObatRacikan.getValueAt(i,2).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,3).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,1).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,4).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,5).toString(),
+                                                    "1",
+                                                    no_apotek
+                                                }) == true) {
+                                                    System.out.println("Obat "+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                    JOptionPane.showMessageDialog(null, "Obat racikan"+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                }
+                                            } else {
+                                                System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                                JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                            }
+
+                                            System.out.println("racikan = \n\n"+requestJson);
+                                        } catch (Exception ex) {
+                                            System.out.println("Notifikasi : " + ex);
+                                            if (ex.toString().contains("UnknownHostException")) {
+                                                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                            }
+                                        }  
+                                    }
+                                }
+                            }
+                        }
+                    }
+                else if (Iterasi.getSelectedIndex() == 1) {
+                    System.out.println("Dengan iterasi:");
+                    URL = link + "/sjpresep/v3/insert";
+                    System.out.println(URL);
+                    requestJson = "{"
+//                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
+                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+ "\","
+                                    + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
+                                    + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
+                                    + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
+                                    + "\"NORESEP\": \"" + TResep.getText()+ "\", "
+                                    + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
+                                    + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\", "
+                                    + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\","
+                                    + "\"KdDokter\": \"0\","
+                                    + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
+                                + "}  ";
+                    System.out.println("Resep : "+requestJson);
+                    requestEntity = new HttpEntity(requestJson, headers);
+                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                    nameNode = root.path("metaData");
+                    System.out.println("data = "+nameNode);
+                    System.out.println("error = "+nameNode.path("message").asText());
+                    if (nameNode.path("code").asText().equals("200")) {
+                        response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
+                        System.out.println("Response : "+response);
+                        if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
+                            new String[]{
+                                response.path("noSep_Kunjungan").asText(),
+                                response.path("noApotik").asText(),
+                                TResep.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" "+Jam.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+""),
+                                JnsObat.getSelectedItem().toString().substring(0, 1),
+                                Iterasi.getSelectedItem().toString().substring(0, 1),
+                                KdPoli.getText(),
+                                NmPoli.getText(),
+                                KdDPJP.getText(),
+                                NmDPJP.getText(),
+                                akses.getkode(),
+                            }) == true) {
+                                System.out.println("Simpan No Resep Selesai");
+                                JOptionPane.showMessageDialog(null, "Resep Apotek "+response.path("noApotik").asText()+" Berhasil disimpan ");
+                                no_apotek = response.path("noApotik").asText();
+                                URL = link + "/obatnonracikan/v3/insert";
+                                System.out.println(URL);
+                                for(i=0;i<tbObat.getRowCount();i++){ 
+                                    if(Valid.SetAngka(tbObat.getValueAt(i,1).toString())>0){   
+                                        try {
+
+                                            requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + response.path("noApotik").asText() + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbObat.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbObat.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"non racikan\"\n"
+                                                    + "        }     ";
+                                            System.out.println("Detail Obat : "+requestJson);
+                                            requestEntity = new HttpEntity(requestJson, headers);
+                                            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            nameNode = root.path("metaData");
+                                            System.out.println("data = "+nameNode);
+                                            if (nameNode.path("code").asText().equals("200")) {
+                                                if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
+                                                    response.path("noSep_Kunjungan").asText(),
+                                                    TResep.getText(),
+                                                    tbObat.getValueAt(i,2).toString(),
+                                                    tbObat.getValueAt(i,3).toString(),
+                                                    tbObat.getValueAt(i,1).toString(),
+                                                    tbObat.getValueAt(i,4).toString(),
+                                                    tbObat.getValueAt(i,5).toString(),
+                                                    "0",
+                                                    no_apotek
+                                                }) == true) {
+                                                    System.out.println("Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                    JOptionPane.showMessageDialog(null, "Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                }
+                                            } else {
+                                                System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                                JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                            }
+
+                                            System.out.println("non racikan = \n\n"+requestJson);
+                                        } catch (Exception ex) {
+                                            System.out.println("Notifikasi : " + ex);
+                                            if (ex.toString().contains("UnknownHostException")) {
+                                                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                            }
+                                        }            
+                                    }
+                                }  
+
+
+    //                            racikan
+                                URL = link + "/obatracikan/v3/insert";
+                                System.out.println(URL);
+                                for(i=0;i<tbDetailObatRacikan.getRowCount();i++){ 
+                                    if(Valid.SetAngka(tbDetailObatRacikan.getValueAt(i,1).toString())>0){
+                                        try {
+                                            requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + no_apotek + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"JNSROBT\": \"R.0"+(tbDetailObatRacikan.getValueAt(i,0).toString())+"\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i,7).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"RACIKAN "+(i+1)+"\"\n"
+                                                    + "        }     ";
+                                            requestEntity = new HttpEntity(requestJson, headers);
+                                            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            nameNode = root.path("metaData");
+                                            System.out.println("data = "+nameNode);
+                                            if (nameNode.path("code").asText().equals("200")) {
+                                                if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
+                                                    response.path("noSep_Kunjungan").asText(),
+                                                    TResep.getText(),
+                                                    tbDetailObatRacikan.getValueAt(i,2).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,3).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,1).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,4).toString(),
+                                                    tbDetailObatRacikan.getValueAt(i,5).toString(),
+                                                    "1",
+                                                    no_apotek
+                                                }) == true) {
+                                                    System.out.println("Obat "+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                    JOptionPane.showMessageDialog(null, "Obat racikan"+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                                }
+                                            } else {
+                                                System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                                JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                            }
+
+                                            System.out.println("racikan = \n\n"+requestJson);
+                                        } catch (Exception ex) {
+                                            System.out.println("Notifikasi : " + ex);
+                                            if (ex.toString().contains("UnknownHostException")) {
+                                                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                            }
+                                        }  
+                                    }
+                                }
+                            }else{
+                                JOptionPane.showMessageDialog(rootPane,"Gagal menyimpan resep apotek BPJS !!!!!");
+                            }
+
+                            dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
+                         }
+                    }
+                } catch (Exception ex) {
+                System.out.println(ex);  
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                }
+            }
+        }                  
+    }
+}//GEN-LAST:event_BtnSimpanActionPerformed
+
+    private void CekObatApotekBPJS(String kode_obat) {
+        try {  
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
@@ -1031,528 +1332,45 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
                 requestEntity = new HttpEntity(headers);
 
-                if (Iterasi.getSelectedIndex() == 0) {
-                    System.out.println("Tanpa iterasi");
-                    URL = link + "/sjpresep/v3/insert";
-                    System.out.println(URL);
-                    requestJson = "{"
-                            //                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
-                            + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem() + "") + " " + cmbJam.getSelectedItem() + ":" + cmbMnt.getSelectedItem() + ":" + cmbDtk.getSelectedItem() + "\","
-                            + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
-                            + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
-                            + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
-                            + "\"NORESEP\": \"" + TResep.getText() + "\", "
-                            + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
-                            + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\", "
-                            + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\","
-                            + "\"KdDokter\": \"0\","
-                            + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
-                            + "}  ";
-                    System.out.println("Resep : " + requestJson);
-                    requestEntity = new HttpEntity(requestJson, headers);
-                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                    nameNode = root.path("metaData");
-                    System.out.println("data = " + nameNode);
-                    System.out.println("error = " + nameNode.path("message").asText());
-                    if (!nameNode.path("code").asText().equals("200")) {
-                        JOptionPane.showMessageDialog(null, "ERROR : " + nameNode.path("message").asText());
-                    }
-                    if (nameNode.path("code").asText().equals("200")) {
-                        response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
-                        System.out.println("Response : " + response);
-                        if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
-                                new String[]{
-                                    response.path("noSep_Kunjungan").asText(),
-                                    response.path("noApotik").asText(),
-                                    TResep.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " " + Jam.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + ""),
-                                    JnsObat.getSelectedItem().toString().substring(0, 1),
-                                    Iterasi.getSelectedItem().toString().substring(0, 1),
-                                    KdPoli.getText(),
-                                    NmPoli.getText(),
-                                    KdDPJP.getText(),
-                                    NmDPJP.getText(),
-                                    akses.getkode(),}) == true) {
-                            System.out.println("Simpan No Resep Selesai");
-                            JOptionPane.showMessageDialog(null, "Resep Apotek " + response.path("noApotik").asText() + " Berhasil disimpan ");
-                            no_apotek = response.path("noApotik").asText();
-                            URL = link + "/obatnonracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbObat.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                    try {
+                URL = link + "/referensi/obat/"+JnsObat.getSelectedItem().toString().substring(0, 1)+"/"+Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+"/"+kode_obat;
+     
+                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+                nameNode = root.path("metaData");
 
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + response.path("noApotik").asText() + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"non racikan\"\n"
-                                                + "        }     ";
-                                        System.out.println("Detail Obat : " + requestJson);
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbObat.getValueAt(i, 2).toString(),
-                                                tbObat.getValueAt(i, 3).toString(),
-                                                tbObat.getValueAt(i, 1).toString(),
-                                                tbObat.getValueAt(i, 4).toString(),
-                                                tbObat.getValueAt(i, 5).toString(),
-                                                "0",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-                                        System.out.println("non racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-
-                            //                            racikan
-                            URL = link + "/obatracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                    try {
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + no_apotek + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                                + "        }     ";
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                                "1",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-
-                                        System.out.println("racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else if (Iterasi.getSelectedIndex() == 1) {
-                    System.out.println("Diperbolehkan Iterasi 1x:");
-                    URL = link + "/sjpresep/v3/insert";
-                    System.out.println(URL);
-                    requestJson = "{"
-                            //                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
-                            + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem() + "") + " " + cmbJam.getSelectedItem() + ":" + cmbMnt.getSelectedItem() + ":" + cmbDtk.getSelectedItem() + "\","
-                            + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
-                            + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
-                            + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
-                            + "\"NORESEP\": \"" + TResep.getText() + "\", "
-                            + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
-                            + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\", "
-                            + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\","
-                            + "\"KdDokter\": \"0\","
-                            + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
-                            + "}  ";
-                    System.out.println("Resep : " + requestJson);
-                    requestEntity = new HttpEntity(requestJson, headers);
-                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                    nameNode = root.path("metaData");
-                    System.out.println("data = " + nameNode);
-                    System.out.println("error = " + nameNode.path("message").asText());
-                    if (nameNode.path("code").asText().equals("200")) {
-                        response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
-                        System.out.println("Response : " + response);
-                        if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
-                                new String[]{
-                                    response.path("noSep_Kunjungan").asText(),
-                                    response.path("noApotik").asText(),
-                                    TResep.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " " + Jam.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + ""),
-                                    JnsObat.getSelectedItem().toString().substring(0, 1),
-                                    Iterasi.getSelectedItem().toString().substring(0, 1),
-                                    KdPoli.getText(),
-                                    NmPoli.getText(),
-                                    KdDPJP.getText(),
-                                    NmDPJP.getText(),
-                                    akses.getkode(),}) == true) {
-                            System.out.println("Simpan No Resep Selesai");
-                            JOptionPane.showMessageDialog(null, "Resep Apotek " + response.path("noApotik").asText() + " Berhasil disimpan ");
-                            no_apotek = response.path("noApotik").asText();
-                            URL = link + "/obatnonracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbObat.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                    try {
-
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + response.path("noApotik").asText() + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"non racikan\"\n"
-                                                + "        }     ";
-                                        System.out.println("Detail Obat : " + requestJson);
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbObat.getValueAt(i, 2).toString(),
-                                                tbObat.getValueAt(i, 3).toString(),
-                                                tbObat.getValueAt(i, 1).toString(),
-                                                tbObat.getValueAt(i, 4).toString(),
-                                                tbObat.getValueAt(i, 5).toString(),
-                                                "0",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-
-                                        System.out.println("non racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-
-                            //                            racikan
-                            URL = link + "/obatracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                    try {
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + no_apotek + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                                + "        }     ";
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                                "1",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-
-                                        System.out.println("racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Gagal menyimpan resep apotek BPJS !!!!!");
-                        }
-
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
-                    }
-                } else if (Iterasi.getSelectedIndex() == 2) {
-                    System.out.println("Diperbolehkan Iterasi 2x:");
-                    URL = link + "/sjpresep/v3/insert";
-                    System.out.println(URL);
-                    requestJson = "{"
-                            //                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
-                            + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem() + "") + " " + cmbJam.getSelectedItem() + ":" + cmbMnt.getSelectedItem() + ":" + cmbDtk.getSelectedItem() + "\","
-                            + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
-                            + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
-                            + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
-                            + "\"NORESEP\": \"" + TResep.getText() + "\", "
-                            + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
-                            + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\", "
-                            + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\","
-                            + "\"KdDokter\": \"0\","
-                            + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
-                            + "}  ";
-                    System.out.println("Resep : " + requestJson);
-                    requestEntity = new HttpEntity(requestJson, headers);
-                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                    nameNode = root.path("metaData");
-                    System.out.println("data = " + nameNode);
-                    System.out.println("error = " + nameNode.path("message").asText());
-                    if (nameNode.path("code").asText().equals("200")) {
-                        response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
-                        System.out.println("Response : " + response);
-                        if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
-                                new String[]{
-                                    response.path("noSep_Kunjungan").asText(),
-                                    response.path("noApotik").asText(),
-                                    TResep.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " " + Jam.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + ""),
-                                    JnsObat.getSelectedItem().toString().substring(0, 1),
-                                    Iterasi.getSelectedItem().toString().substring(0, 1),
-                                    KdPoli.getText(),
-                                    NmPoli.getText(),
-                                    KdDPJP.getText(),
-                                    NmDPJP.getText(),
-                                    akses.getkode(),}) == true) {
-                            System.out.println("Simpan No Resep Selesai");
-                            JOptionPane.showMessageDialog(null, "Resep Apotek " + response.path("noApotik").asText() + " Berhasil disimpan ");
-                            no_apotek = response.path("noApotik").asText();
-                            URL = link + "/obatnonracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbObat.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                    try {
-
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + response.path("noApotik").asText() + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"non racikan\"\n"
-                                                + "        }     ";
-                                        System.out.println("Detail Obat : " + requestJson);
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbObat.getValueAt(i, 2).toString(),
-                                                tbObat.getValueAt(i, 3).toString(),
-                                                tbObat.getValueAt(i, 1).toString(),
-                                                tbObat.getValueAt(i, 4).toString(),
-                                                tbObat.getValueAt(i, 5).toString(),
-                                                "0",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-
-                                        System.out.println("non racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-
-                            //                            racikan
-                            URL = link + "/obatracikan/v3/insert";
-                            System.out.println(URL);
-                            for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                    try {
-                                        requestJson = "{\n"
-                                                + "            \"NOSJP\": \"" + no_apotek + "\",\n"
-                                                + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                                + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                                + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                                + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                                + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                                + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                                + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                                + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                                + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                                + "        }     ";
-                                        requestEntity = new HttpEntity(requestJson, headers);
-                                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                        nameNode = root.path("metaData");
-                                        System.out.println("data = " + nameNode);
-                                        if (nameNode.path("code").asText().equals("200")) {
-                                            if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                                response.path("noSep_Kunjungan").asText(),
-                                                TResep.getText(),
-                                                tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                                tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                                "1",
-                                                no_apotek
-                                            }) == true) {
-                                                System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                                JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            }
-                                        } else {
-                                            System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                            JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        }
-
-                                        System.out.println("racikan = \n\n" + requestJson);
-                                    } catch (Exception ex) {
-                                        System.out.println("Notifikasi : " + ex);
-                                        if (ex.toString().contains("UnknownHostException")) {
-                                            JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Gagal menyimpan resep apotek BPJS !!!!!");
-                        }
-
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
-                    }
+                if (nameNode.path("code").asText().equals("200")) {
+                    response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
+                    
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
                 }
             } catch (Exception ex) {
-                System.out.println(ex);
+                System.out.println(ex);  
                 if (ex.toString().contains("UnknownHostException")) {
                     JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                 }
             }
-        }
     }
-}//GEN-LAST:event_BtnSimpanActionPerformed
-
-    private void CekObatApotekBPJS(String kode_obat) {
-        try {
-            headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
-            utc = String.valueOf(api.GetUTCdatetimeAsString());
-            headers.add("x-timestamp", utc);
-            headers.add("x-signature", api.getHmac(utc));
-            headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
-            requestEntity = new HttpEntity(headers);
-
-            URL = link + "/referensi/obat/" + JnsObat.getSelectedItem().toString().substring(0, 1) + "/" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + "/" + kode_obat;
-
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-            nameNode = root.path("metaData");
-
-            if (nameNode.path("code").asText().equals("200")) {
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
-
-            } else {
-                JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-            if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-            }
-        }
-    }
-
+    
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-
+           
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        if (noresep.equals("")) {
+        if(noresep.equals("")){
             tampilobat();
-        }
+        }            
     }//GEN-LAST:event_formWindowOpened
 
     private void DTPTglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DTPTglKeyPressed
-        Valid.pindah(evt, BtnKeluar, cmbJam);
+        Valid.pindah(evt,BtnKeluar,cmbJam);
     }//GEN-LAST:event_DTPTglKeyPressed
 
     private void cmbJamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbJamKeyPressed
-        Valid.pindah(evt, DTPTgl, cmbMnt);
+        Valid.pindah(evt,DTPTgl,cmbMnt);
     }//GEN-LAST:event_cmbJamKeyPressed
 
     private void cmbMntKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbMntKeyPressed
-        Valid.pindah(evt, cmbJam, cmbDtk);
+        Valid.pindah(evt,cmbJam,cmbDtk);
     }//GEN-LAST:event_cmbMntKeyPressed
 
     private void cmbDtkKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbDtkKeyPressed
@@ -1563,31 +1381,31 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }//GEN-LAST:event_ChkJlnActionPerformed
 
     private void tbObatPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tbObatPropertyChange
-        if (this.isVisible() == true) {
+        if(this.isVisible()==true){
             getDataobat();
         }
     }//GEN-LAST:event_tbObatPropertyChange
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-
+       
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void tbObatRacikanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatRacikanKeyPressed
-
+       
     }//GEN-LAST:event_tbObatRacikanKeyPressed
 
     private void tbDetailObatRacikanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDetailObatRacikanKeyPressed
-
+        
     }//GEN-LAST:event_tbDetailObatRacikanKeyPressed
 
     private void tbDetailObatRacikanPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tbDetailObatRacikanPropertyChange
-        if (this.isVisible() == true) {
+        if(this.isVisible()==true){
             getDatadetailobatracikan();
         }
     }//GEN-LAST:event_tbDetailObatRacikanPropertyChange
 
     private void tbDetailObatRacikanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDetailObatRacikanMouseClicked
-        if (tbObat.getRowCount() != 0) {
+        if(tbObat.getRowCount()!=0){
             try {
                 getDatadetailobatracikan();
             } catch (Exception e) {
@@ -1625,29 +1443,29 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void CariDataObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariDataObatActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        ApotekBPJSDaftarPelayananObat resume = new ApotekBPJSDaftarPelayananObat(null, true);
+        ApotekBPJSDaftarPelayananObat2 resume=new ApotekBPJSDaftarPelayananObat2(null,true);
         resume.setNoRm(NoSEP.getText());
-        resume.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
+        resume.setSize(internalFrame1.getWidth(),internalFrame1.getHeight());
         resume.setLocationRelativeTo(internalFrame1);
         resume.setVisible(true);
         resume.tampil();
-        this.setCursor(Cursor.getDefaultCursor());
+        this.setCursor(Cursor.getDefaultCursor()); 
     }//GEN-LAST:event_CariDataObatActionPerformed
 
     private void CariDataObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CariDataObatKeyPressed
-
+      
     }//GEN-LAST:event_CariDataObatKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if (tbObat.getSelectedRow() != -1) {
-            int reply = JOptionPane.showConfirmDialog(rootPane, "Yakin mau dihapus obat " + tbObat.getValueAt(tbObat.getSelectedRow(), 3) + " (" + tbObat.getValueAt(tbObat.getSelectedRow(), 1) + ") ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (tbObat.getSelectedRow()!= -1) {
+            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat "+tbObat.getValueAt(tbObat.getSelectedRow(), 3)+" ("+tbObat.getValueAt(tbObat.getSelectedRow(), 1)+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 tabModeobat.removeRow(tbObat.getSelectedRow());
             }
         }
-
-        if (tbDetailObatRacikan.getSelectedRow() != -1) {
-            int reply = JOptionPane.showConfirmDialog(rootPane, "Yakin mau dihapus obat RACIKAN " + tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 3) + " (" + tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 1) + ") ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        
+        if (tbDetailObatRacikan.getSelectedRow()!= -1) {
+            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat RACIKAN "+tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 3)+" ("+tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 1)+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 tabModeDetailObatRacikan.removeRow(tbDetailObatRacikan.getSelectedRow());
             }
@@ -1655,9 +1473,9 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             BtnHapusActionPerformed(null);
-        } else {
+        }else{
             Valid.pindah(evt, BtnKeluar, CariDataObat);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
@@ -1678,8 +1496,8 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }//GEN-LAST:event_BtnSimpan3ActionPerformed
 
     /**
-     * @param args the command line arguments
-     */
+    * @param args the command line arguments
+    */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             ApotekBPJSKirimObat dialog = new ApotekBPJSKirimObat(new javax.swing.JFrame(), true);
@@ -1750,9 +1568,8 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private widget.Table tbObat;
     private widget.Table tbObatRacikan;
     // End of variables declaration//GEN-END:variables
-    private widget.TextBox noSJP, noResep;
-
-    public void tampilobat() {
+    private widget.TextBox noSJP,noResep;
+    public void tampilobat() {        
 //        z=0;
 //        for(i=0;i<tbObat.getRowCount();i++){
 //            if(!tbObat.getValueAt(i,0).toString().equals("")){
@@ -1834,8 +1651,8 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 //            System.out.println("Notifikasi : "+e);
 //        }            
     }
-
-    public void tampildetailracikanobat() {
+    
+    public void tampildetailracikanobat() {        
 //        z=0;
 //        for(i=0;i<tbDetailObatRacikan.getRowCount();i++){
 //            if(Valid.SetAngka(tbDetailObatRacikan.getValueAt(i,1).toString())>0){
@@ -1920,213 +1737,213 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 //            System.out.println("Notifikasi : "+e);
 //        } 
     }
-
-    public void tampilobat2(String no_resep) {
-        this.noresep = no_resep;
+    
+    public void tampilobat2(String no_resep) {     
+        this.noresep=no_resep; 
         try {
             Valid.tabelKosong(tabModeobat);
             Valid.tabelKosong(tabModeObatRacikan);
             Valid.tabelKosong(tabModeDetailObatRacikan);
-
-            ps2 = koneksi.prepareStatement(
-                    "select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam, resep_obat.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_obat.kd_dokter,dokter.nm_dokter from resep_obat inner join reg_periksa inner join pasien inner join dokter on "
-                    + "resep_obat.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and resep_obat.kd_dokter=dokter.kd_dokter where resep_obat.no_resep=?");
+            
+            ps2=koneksi.prepareStatement(
+                "select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam, resep_obat.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_obat.kd_dokter,dokter.nm_dokter from resep_obat inner join reg_periksa inner join pasien inner join dokter on "+
+                "resep_obat.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and resep_obat.kd_dokter=dokter.kd_dokter where resep_obat.no_resep=?");
 
             try {
-                ps2.setString(1, no_resep);
-                rs2 = ps2.executeQuery();
-
-                while (rs2.next()) {
-
-                    psobat = koneksi.prepareStatement(
-                            "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml from detail_pemberian_obat inner join maping_obat_apotek_bpjs on detail_pemberian_obat.kode_brng=maping_obat_apotek_bpjs.kode_brng inner join databarang on detail_pemberian_obat.kode_brng=databarang.kode_brng where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? "
-                            + "and detail_pemberian_obat.no_rawat=? and databarang.kode_brng not in (select detail_obat_racikan.kode_brng from detail_obat_racikan where detail_obat_racikan.tgl_perawatan=? and detail_obat_racikan.jam=? and detail_obat_racikan.no_rawat=?) order by databarang.kode_brng");
-                    try {
-                        psobat.setString(1, rs2.getString("tgl_perawatan"));
-                        psobat.setString(2, rs2.getString("jam"));
-                        psobat.setString(3, rs2.getString("no_rawat"));
-                        psobat.setString(4, rs2.getString("tgl_perawatan"));
-                        psobat.setString(5, rs2.getString("jam"));
-                        psobat.setString(6, rs2.getString("no_rawat"));
-                        rsobat = psobat.executeQuery();
-                        while (rsobat.next()) {
+                ps2.setString(1,no_resep);
+                rs2=ps2.executeQuery();
+                
+                while (rs2.next()) { 
+                    
+                    psobat=koneksi.prepareStatement(
+                        "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml from detail_pemberian_obat inner join maping_obat_apotek_bpjs on detail_pemberian_obat.kode_brng=maping_obat_apotek_bpjs.kode_brng inner join databarang on detail_pemberian_obat.kode_brng=databarang.kode_brng where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? "+
+                        "and detail_pemberian_obat.no_rawat=? and databarang.kode_brng not in (select detail_obat_racikan.kode_brng from detail_obat_racikan where detail_obat_racikan.tgl_perawatan=? and detail_obat_racikan.jam=? and detail_obat_racikan.no_rawat=?) order by databarang.kode_brng");
+                    try{
+                        psobat.setString(1,rs2.getString("tgl_perawatan"));
+                        psobat.setString(2,rs2.getString("jam"));
+                        psobat.setString(3,rs2.getString("no_rawat"));
+                        psobat.setString(4,rs2.getString("tgl_perawatan"));
+                        psobat.setString(5,rs2.getString("jam"));
+                        psobat.setString(6,rs2.getString("no_rawat"));
+                        rsobat=psobat.executeQuery();
+                        while(rsobat.next()){
                             if (rsobat.getString("jml").equals("15")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 0.5, 30});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,0.5,30}); 
                             } else if (rsobat.getString("jml").equals("45")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1.5, 30});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1.5,30}); 
                             } else if (rsobat.getString("jml").equals("60")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 2, 1, 30});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),2,1,30}); 
                             } else if (rsobat.getString("jml").equals("90")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 3, 1, 30});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),3,1,30}); 
                             } else if (rsobat.getString("jml").equals("120")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 4, 1, 30});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),4,1,30}); 
                             } else if (rsobat.getString("jml").equals("3")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 3});
-                            } else if (rsobat.getString("jml").equals("1")) {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 1});
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1,3}); 
                             } else {
-                                tabModeobat.addRow(new Object[]{false, rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 30});
-                            }
+                                tabModeobat.addRow(new Object[] {false,rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1,30}); 
+                            }            
                         }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : " + e);
-                    } finally {
-                        if (rsobat != null) {
+                    }catch(Exception e){
+                        System.out.println("Notifikasi : "+e);
+                    }finally{
+                        if(rsobat != null){
                             rsobat.close();
                         }
 
-                        if (psobat != null) {
+                        if(psobat != null){
                             psobat.close();
                         }
                     }
 
-                    for (i = 0; i < tbObat.getRowCount(); i++) {
+                    for(i=0;i<tbObat.getRowCount();i++){
                         getDataobat(i);
                     }
-
+                    
 //                    racikan
-                    psracikan = koneksi.prepareStatement(
-                            "select obat_racikan.no_racik,obat_racikan.nama_racik,"
-                            + "obat_racikan.kd_racik,metode_racik.nm_racik as metode,"
-                            + "obat_racikan.jml_dr,obat_racikan.aturan_pakai,"
-                            + "obat_racikan.keterangan from obat_racikan inner join metode_racik "
-                            + "on obat_racikan.kd_racik=metode_racik.kd_racik where "
-                            + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? "
-                            + "and obat_racikan.no_rawat=? ");
+                    psracikan=koneksi.prepareStatement(
+                            "select obat_racikan.no_racik,obat_racikan.nama_racik,"+
+                            "obat_racikan.kd_racik,metode_racik.nm_racik as metode,"+
+                            "obat_racikan.jml_dr,obat_racikan.aturan_pakai,"+
+                            "obat_racikan.keterangan from obat_racikan inner join metode_racik "+
+                            "on obat_racikan.kd_racik=metode_racik.kd_racik where "+
+                            "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? "+
+                            "and obat_racikan.no_rawat=? ");
                     try {
-                        psracikan.setString(1, rs2.getString("tgl_perawatan"));
-                        psracikan.setString(2, rs2.getString("jam"));
-                        psracikan.setString(3, rs2.getString("no_rawat"));
-                        rsracikan = psracikan.executeQuery();
-                        while (rsracikan.next()) {
+                        psracikan.setString(1,rs2.getString("tgl_perawatan"));
+                        psracikan.setString(2,rs2.getString("jam"));
+                        psracikan.setString(3,rs2.getString("no_rawat"));
+                        rsracikan=psracikan.executeQuery();
+                        while(rsracikan.next()){
                             tabModeObatRacikan.addRow(new String[]{
-                                rsracikan.getString("no_racik"), rsracikan.getString("nama_racik"), rsracikan.getString("kd_racik"),
-                                rsracikan.getString("metode"), rsracikan.getString("jml_dr"), rsracikan.getString("aturan_pakai"),
+                                rsracikan.getString("no_racik"),rsracikan.getString("nama_racik"),rsracikan.getString("kd_racik"),
+                                rsracikan.getString("metode"),rsracikan.getString("jml_dr"),rsracikan.getString("aturan_pakai"),
                                 rsracikan.getString("keterangan")
                             });
-
-                            psobat = koneksi.prepareStatement(
-                                    "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml, databarang.kapasitas from "
-                                    + "detail_pemberian_obat inner join maping_obat_apotek_bpjs on detail_pemberian_obat.kode_brng=maping_obat_apotek_bpjs.kode_brng inner join "
-                                    + "databarang inner join detail_obat_racikan "
-                                    + "on detail_pemberian_obat.kode_brng=databarang.kode_brng and "
-                                    + "detail_pemberian_obat.kode_brng=detail_obat_racikan.kode_brng and "
-                                    + "detail_pemberian_obat.tgl_perawatan=detail_obat_racikan.tgl_perawatan and "
-                                    + "detail_pemberian_obat.jam=detail_obat_racikan.jam and "
-                                    + "detail_pemberian_obat.no_rawat=detail_obat_racikan.no_rawat "
-                                    + "where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? and "
-                                    + "detail_pemberian_obat.no_rawat=? and detail_obat_racikan.no_racik=? order by databarang.kode_brng");
+                            
+                            psobat=koneksi.prepareStatement(
+                                "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml, databarang.kapasitas from "+
+                                "detail_pemberian_obat inner join maping_obat_apotek_bpjs on detail_pemberian_obat.kode_brng=maping_obat_apotek_bpjs.kode_brng inner join "+
+                                "databarang inner join detail_obat_racikan "+
+                                "on detail_pemberian_obat.kode_brng=databarang.kode_brng and "+
+                                "detail_pemberian_obat.kode_brng=detail_obat_racikan.kode_brng and "+
+                                "detail_pemberian_obat.tgl_perawatan=detail_obat_racikan.tgl_perawatan and "+
+                                "detail_pemberian_obat.jam=detail_obat_racikan.jam and "+
+                                "detail_pemberian_obat.no_rawat=detail_obat_racikan.no_rawat "+
+                                "where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? and "+
+                                "detail_pemberian_obat.no_rawat=? and detail_obat_racikan.no_racik=? order by databarang.kode_brng");
                             try {
-                                psobat.setString(1, rs2.getString("tgl_perawatan"));
-                                psobat.setString(2, rs2.getString("jam"));
-                                psobat.setString(3, rs2.getString("no_rawat"));
-                                psobat.setString(4, rsracikan.getString("no_racik"));
-                                rsobat = psobat.executeQuery();
-
-                                while (rsobat.next()) {
+                                psobat.setString(1,rs2.getString("tgl_perawatan"));
+                                psobat.setString(2,rs2.getString("jam"));
+                                psobat.setString(3,rs2.getString("no_rawat"));
+                                psobat.setString(4,rsracikan.getString("no_racik"));
+                                rsobat=psobat.executeQuery();
+                                
+                                while(rsobat.next()){
                                     if (rsobat.getString("jml").equals("15")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 0.5, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,0.5,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")}); 
                                     } else if (rsobat.getString("jml").equals("45")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1.5, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1.5,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else if (rsobat.getString("jml").equals("60")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 2, 1, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),2,1,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else if (rsobat.getString("jml").equals("90")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 3, 1, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),3,1,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else if (rsobat.getString("jml").equals("120")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 4, 1, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),4,1,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else if (rsobat.getString("jml").equals("2")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 2, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1,2,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else if (rsobat.getString("jml").equals("2")) {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 2, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1,2,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
                                     } else {
-                                        tabModeDetailObatRacikan.addRow(new Object[]{rsracikan.getString("no_racik"), rsobat.getString("jml"), rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), 1, 1, 30, Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='" + rs2.getString("no_resep") + "' AND kode_brng='" + rsobat.getString("kode_brng") + "'")});
-                                    }
-                                }
+                                        tabModeDetailObatRacikan.addRow(new Object[] {rsracikan.getString("no_racik"),rsobat.getString("jml"),rsobat.getString("kode_brng"),rsobat.getString("nama_brng"),1,1,30,Sequel.cariIsi("SELECT kandungan FROM resep_dokter_racikan_detail WHERE no_resep='"+rs2.getString("no_resep")+"' AND kode_brng='"+rsobat.getString("kode_brng")+"'")});
+                                    }  
+                                }                                
                             } catch (Exception e) {
-                                System.out.println("Notifikasi Detail Racikan : " + e);
+                                System.out.println("Notifikasi Detail Racikan : "+e);
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("Notif Racikan : " + e);
-                    } finally {
-                        if (rsracikan != null) {
+                        System.out.println("Notif Racikan : "+e);
+                    } finally{
+                        if(rsracikan!=null){
                             rsracikan.close();
                         }
-                        if (psracikan != null) {
+                        if(psracikan!=null){
                             psracikan.close();
                         }
                     }
 
-                    for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
+                    for(i=0;i<tbDetailObatRacikan.getRowCount();i++){
                         getDatadetailobatracikan(i);
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Notifikasi racikan : " + e);
-            } finally {
-                if (rs2 != null) {
+                 System.out.println("Notifikasi racikan : "+e);
+            } finally{
+                if(rs2!=null){
                     rs2.close();
                 }
-                if (rs2 != null) {
+                if(rs2!=null){
                     rs2.close();
                 }
             }
-
+            
         } catch (Exception e) {
-            System.out.println("Notifikasi : " + e);
-        }
+            System.out.println("Notifikasi : "+e);
+        }            
     }
 
     public void emptTeksobat() {
-        Kd2.setText("");
+        Kd2.setText(""); 
     }
 
     private void getDataobat() {
-        if (tbObat.getSelectedRow() != -1) {
-            row = tbObat.getSelectedRow();
-            if (!tbObat.getValueAt(row, 1).toString().equals("")) {
-                if (Double.parseDouble(tbObat.getValueAt(row, 1).toString()) > 0) {
-                    Double.parseDouble(tbObat.getValueAt(row, 1).toString());
-                }
+        if(tbObat.getSelectedRow()!= -1){
+            row=tbObat.getSelectedRow();
+            if(!tbObat.getValueAt(row,1).toString().equals("")){
+                if(Double.parseDouble(tbObat.getValueAt(row,1).toString())>0){
+                    Double.parseDouble(tbObat.getValueAt(row,1).toString());
+                } 
             }
-        }
+        }            
+    }
+    
+    private void getDataobat(int data) {        
+        Double.parseDouble(tbObat.getValueAt(data,1).toString());
     }
 
-    private void getDataobat(int data) {
-        Double.parseDouble(tbObat.getValueAt(data, 1).toString());
-    }
-
-    public JTextField getTextField() {
+    public JTextField getTextField(){
         return Kd2;
     }
 
-    public JTable getTable() {
+    public JTable getTable(){
         return tbObat;
     }
-
-    public Button getButton() {
+    
+    public Button getButton(){
         return BtnSimpan;
     }
+    
 
-    public void setNoRm(String norwt, String norm, String nama, String tanggal, String jam, String Resep) {
-        aktifpcare = "no";
+    
+    public void setNoRm(String norwt,String norm,String nama,String tanggal, String jam, String Resep) {        
+        aktifpcare="no";
         TNoRw.setText(norwt);
         LblNoRawat.setText(norwt);
         TNoRM.setText(norm);
         TPasien.setText(nama);
-        noresep = "";
-        Valid.SetTgl(TanggalPelayanan, tanggal);
-        Jam.setText(jam);
-        KdPj.setText(Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?", norwt));
-        kenaikan = Sequel.cariIsiAngka("select (set_harga_obat_ralan.hargajual/100) from set_harga_obat_ralan where set_harga_obat_ralan.kd_pj=?", KdPj.getText());
+        noresep="";
+        Valid.SetTgl(TanggalPelayanan,tanggal);
+        Jam.setText(jam);  
+        KdPj.setText(Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?",norwt));
+        kenaikan=Sequel.cariIsiAngka("select (set_harga_obat_ralan.hargajual/100) from set_harga_obat_ralan where set_harga_obat_ralan.kd_pj=?",KdPj.getText());
         TResep.setText(Resep);
-
-        try {
-            ps2 = koneksi.prepareStatement("SELECT no_sep, tanggal_lahir, no_kartu, tglsep, kdpolitujuan, nmpolitujuan, kddpjp, nmdpdjp from bridging_sep where no_rawat = ?");
+        
+        try{     
+            ps2=koneksi.prepareStatement("SELECT no_sep, tanggal_lahir, no_kartu, tglsep, kdpolitujuan, nmpolitujuan, kddpjp, nmdpdjp from bridging_sep where no_rawat = ?");
             try {
-                ps2.setString(1, norwt);
-                rs2 = ps2.executeQuery();
-                while (rs2.next()) {
+                ps2.setString(1,norwt);
+                rs2=ps2.executeQuery();
+                while(rs2.next()){
                     NoSEP.setText(rs2.getString("no_sep"));
                     KdDPJP.setText(rs2.getString("kddpjp"));
                     NmDPJP.setText(rs2.getString("nmdpdjp"));
@@ -2136,26 +1953,25 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     Lahir.setText(rs2.getString("tanggal_lahir"));
                 }
             } catch (Exception e) {
-                System.out.println("Notif : " + e);
-            } finally {
-                if (rs2 != null) {
+                System.out.println("Notif : "+e);
+            } finally{
+                if(rs2!=null){
                     rs2.close();
                 }
-                if (ps2 != null) {
+                if(ps2!=null){
                     ps2.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notifikasi : " + e);
+        }catch(Exception e){
+            System.out.println("Notifikasi : "+e);
         }
     }
-
-    private void jam() {
-        ActionListener taskPerformer = new ActionListener() {
+    
+    private void jam(){
+        ActionListener taskPerformer = new ActionListener(){
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
@@ -2166,14 +1982,14 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if (ChkJln.isSelected() == true) {
+                if(ChkJln.isSelected()==true){
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                } else if (ChkJln.isSelected() == false) {
-                    nilai_jam = cmbJam.getSelectedIndex();
-                    nilai_menit = cmbMnt.getSelectedIndex();
-                    nilai_detik = cmbDtk.getSelectedIndex();
+                }else if(ChkJln.isSelected()==false){
+                    nilai_jam =cmbJam.getSelectedIndex();
+                    nilai_menit =cmbMnt.getSelectedIndex();
+                    nilai_detik =cmbDtk.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -2205,497 +2021,398 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         // Timer
         new Timer(1000, taskPerformer).start();
     }
-
-    public void setDokter(String kodedokter, String namadokter) {
-        this.kodedokter = kodedokter;
-        this.namadokter = namadokter;
+    
+    public void setDokter(String kodedokter,String namadokter){
+        this.kodedokter=kodedokter;
+        this.namadokter=namadokter;
     }
-
+    
     private void getDatadetailobatracikan() {
-        if (tbDetailObatRacikan.getSelectedRow() != -1) {
-            row = tbDetailObatRacikan.getSelectedRow();
+        if(tbDetailObatRacikan.getSelectedRow()!= -1){
+            row=tbDetailObatRacikan.getSelectedRow();
             try {
-                if (Double.parseDouble(tbDetailObatRacikan.getValueAt(row, 1).toString()) > 0) {
-                    Double.parseDouble(tbDetailObatRacikan.getValueAt(row, 1).toString());
-                }
+                if(Double.parseDouble(tbDetailObatRacikan.getValueAt(row,1).toString())>0){
+                    Double.parseDouble(tbDetailObatRacikan.getValueAt(row,1).toString());
+                } 
             } catch (Exception e) {
 //                System.out.println("Notif Racikan : "+e);
-            }
+            }   
         }
     }
-
-    private void getDatadetailobatracikan(int data) {
-        Double.parseDouble(tbDetailObatRacikan.getValueAt(data, 1).toString());
+    
+    private void getDatadetailobatracikan(int data) {       
+       Double.parseDouble(tbDetailObatRacikan.getValueAt(data,1).toString());
     }
-
-    private void KirimResepKosong() {
-        if (TNoRw.getText().trim().equals("")) {
-            Valid.textKosong(TNoRw, "No Rawat");
-        } else if (NoSEP.getText().trim().equals("")) {
-            Valid.textKosong(NoSEP, "Nomor Sep");
-        } else if (KdDPJP.getText().trim().equals("")) {
-            Valid.textKosong(KdDPJP, "Dokter");
-        } else if (KdPoli.getText().trim().equals("")) {
-            Valid.textKosong(KdPoli, "Poliklinik");
-        } else if (TResep.getText().trim().equals("")) {
-            Valid.textKosong(TResep, "Nomor Resep");
-        } else if (Lahir.getText().trim().equals("")) {
-            Valid.textKosong(Lahir, "Lahir");
-        } else {
-            int reply = JOptionPane.showConfirmDialog(rootPane, "Eeiiiiiits, udah bener belum data yang mau disimpan..?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                try {
-                    headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
-                    utc = String.valueOf(api.GetUTCdatetimeAsString());
-                    headers.add("x-timestamp", utc);
-                    headers.add("x-signature", api.getHmac(utc));
-                    headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
-                    requestEntity = new HttpEntity(headers);
-
+    
+    private void KirimResepKosong(){
+    if(TNoRw.getText().trim().equals("")){
+        Valid.textKosong(TNoRw,"No Rawat");
+    }else if(NoSEP.getText().trim().equals("")){
+        Valid.textKosong(NoSEP,"Nomor Sep");                                      
+    }else if(KdDPJP.getText().trim().equals("")){
+        Valid.textKosong(KdDPJP,"Dokter");                                      
+    }else if(KdPoli.getText().trim().equals("")){
+        Valid.textKosong(KdPoli,"Poliklinik");                                      
+    }else if(TResep.getText().trim().equals("")){
+        Valid.textKosong(TResep,"Nomor Resep");                                      
+    }else if(Lahir.getText().trim().equals("")){
+        Valid.textKosong(Lahir,"Lahir");                                      
+    }else{
+        int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, udah bener belum data yang mau disimpan..?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            try {  
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("x-timestamp", utc);
+                headers.add("x-signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
+                requestEntity = new HttpEntity(headers);
+                
+//                    System.out.println("Tanpa iterasi");
                     URL = link + "/sjpresep/v3/insert";
                     System.out.println(URL);
                     requestJson = "{"
-                            //                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
-                            + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem() + "") + " " + cmbJam.getSelectedItem() + ":" + cmbMnt.getSelectedItem() + ":" + cmbDtk.getSelectedItem() + "\","
-                            + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
-                            + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
-                            + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
-                            + "\"NORESEP\": \"" + TResep.getText() + "\", "
-                            + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
-                            + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\", "
-                            + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " 00:00:00\","
-                            + "\"KdDokter\": \"0\","
-                            + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
-                            + "}  ";
-                    System.out.println("Resep : " + requestJson);
+//                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+Jam.getText()+ "\","+
+                                    + "\"TGLSJP\": \"" + Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+ "\","
+                                    + "\"REFASALSJP\": \"" + NoSEP.getText() + "\","
+                                    + "\"POLIRSP\": \"" + KdPoli.getText() + "\","
+                                    + "\"KDJNSOBAT\": \"" + JnsObat.getSelectedItem().toString().substring(0, 1) + "\","
+                                    + "\"NORESEP\": \"" + TResep.getText()+ "\", "
+                                    + "\"IDUSERSJP\": \"RS_" + akses.getkode() + "\","
+                                    + "\"TGLRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\", "
+                                    + "\"TGLPELRSP\": \"" + Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" 00:00:00\","
+                                    + "\"KdDokter\": \"0\","
+                                    + "\"iterasi\":\"" + Iterasi.getSelectedItem().toString().substring(0, 1) + "\""
+                                + "}  ";
+                    System.out.println("Resep : "+requestJson);
                     requestEntity = new HttpEntity(requestJson, headers);
                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                     nameNode = root.path("metaData");
-                    System.out.println("data = " + nameNode);
-                    System.out.println("error = " + nameNode.path("message").asText());
+                    System.out.println("data = "+nameNode);
+                    System.out.println("error = "+nameNode.path("message").asText());
                     if (nameNode.path("code").asText().equals("200")) {
                         response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
-                        System.out.println("Response : " + response);
+                        System.out.println("Response : "+response);
                         if (Sequel.menyimpantf2("bridging_apotek_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?", "data", 12,
-                                new String[]{
-                                    response.path("noSep_Kunjungan").asText(),
-                                    response.path("noApotik").asText(),
-                                    TResep.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + "") + " " + Jam.getText(),
-                                    Valid.SetTgl(TanggalPelayanan.getSelectedItem() + ""),
-                                    JnsObat.getSelectedItem().toString().substring(0, 1),
-                                    Iterasi.getSelectedItem().toString().substring(0, 1),
-                                    KdPoli.getText(),
-                                    NmPoli.getText(),
-                                    KdDPJP.getText(),
-                                    NmDPJP.getText(),
-                                    akses.getkode(),}) == true) {
-                            System.out.println("Simpan No Resep Selesai");
-                            JOptionPane.showMessageDialog(null, "Resep Apotek " + response.path("noApotik").asText() + " Berhasil disimpan ");
-                            no_apotek = response.path("noApotik").asText();
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, " ERROR : " + nameNode.path("message").asText());
-                    }
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                    if (ex.toString().contains("UnknownHostException")) {
-                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                            new String[]{
+                                response.path("noSep_Kunjungan").asText(),
+                                response.path("noApotik").asText(),
+                                TResep.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+"")+" "+Jam.getText(),
+                                Valid.SetTgl(TanggalPelayanan.getSelectedItem()+""),
+                                JnsObat.getSelectedItem().toString().substring(0, 1),
+                                Iterasi.getSelectedItem().toString().substring(0, 1),
+                                KdPoli.getText(),
+                                NmPoli.getText(),
+                                KdDPJP.getText(),
+                                NmDPJP.getText(),
+                                akses.getkode(),
+                            }) == true) {
+                                System.out.println("Simpan No Resep Selesai");
+                                JOptionPane.showMessageDialog(null, "Resep Apotek "+response.path("noApotik").asText()+" Berhasil disimpan ");
+                                no_apotek = response.path("noApotik").asText();                                
+                            }
+                        }  else {
+                            JOptionPane.showMessageDialog(null, " ERROR : "+nameNode.path("message").asText());
+                        } 
+            } catch (Exception ex) {
+                System.out.println(ex);  
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                     }
                 }
             }
         }
     }
-
-    private void InsertObatNonRacikan() {
-        if (TNoRw.getText().trim().equals("")) {
-            Valid.textKosong(TNoRw, "No Rawat");
-        } else if (NoSEP.getText().trim().equals("")) {
-            Valid.textKosong(NoSEP, "Nomor Sep");
-        } else if (KdDPJP.getText().trim().equals("")) {
-            Valid.textKosong(KdDPJP, "Dokter");
-        } else if (KdPoli.getText().trim().equals("")) {
-            Valid.textKosong(KdPoli, "Poliklinik");
-        } else if (TResep.getText().trim().equals("")) {
-            Valid.textKosong(TResep, "Nomor Resep");
-        } else if (Lahir.getText().trim().equals("")) {
-            Valid.textKosong(Lahir, "Lahir");
-        } else {
-            int reply = JOptionPane.showConfirmDialog(rootPane, "Eeiiiiiits, udah bener belum data yang mau disimpan..?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                try {
-                    headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
-                    utc = String.valueOf(api.GetUTCdatetimeAsString());
-                    headers.add("x-timestamp", utc);
-                    headers.add("x-signature", api.getHmac(utc));
-                    headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
-                    requestEntity = new HttpEntity(headers);
-
+    
+    private void InsertObatNonRacikan(){
+    if(TNoRw.getText().trim().equals("")){
+        Valid.textKosong(TNoRw,"No Rawat");
+    }else if(NoSEP.getText().trim().equals("")){
+        Valid.textKosong(NoSEP,"Nomor Sep");                                      
+    }else if(KdDPJP.getText().trim().equals("")){
+        Valid.textKosong(KdDPJP,"Dokter");                                      
+    }else if(KdPoli.getText().trim().equals("")){
+        Valid.textKosong(KdPoli,"Poliklinik");                                      
+    }else if(TResep.getText().trim().equals("")){
+        Valid.textKosong(TResep,"Nomor Resep");                                      
+    }else if(Lahir.getText().trim().equals("")){
+        Valid.textKosong(Lahir,"Lahir");                                      
+    }else{
+        int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, udah bener belum data yang mau disimpan..?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            try {  
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("x-timestamp", utc);
+                headers.add("x-signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
+                requestEntity = new HttpEntity(headers);
+                
 //                cek resep yang sdh ada
 //                sdh ada nomor apotek
-                    if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 0) {
-                        URL = link + "/obatnonracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbObat.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"non racikan\"\n"
-                                            + "        }     ";
-                                    System.out.println("Request JSON: " + requestJson);
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbObat.getValueAt(i, 2).toString(),
-                                            tbObat.getValueAt(i, 3).toString(),
-                                            tbObat.getValueAt(i, 1).toString(),
-                                            tbObat.getValueAt(i, 4).toString(),
-                                            tbObat.getValueAt(i, 5).toString(),
-                                            "0",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
+                if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 0) {
+                    URL = link + "/obatnonracikan/v3/insert";
+                    System.out.println(URL);    
+                    for(i=0;i<tbObat.getRowCount();i++){
+                        if(Valid.SetAngka(tbObat.getValueAt(i,1).toString())>0){   
+                            try {
+                                requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='"+TResep.getText()+"'") + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbObat.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbObat.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"non racikan\"\n"
+                                                    + "        }     ";
+                                System.out.println("Request JSON: " + requestJson);
+                                requestEntity = new HttpEntity(requestJson, headers);
+                                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                nameNode = root.path("metaData");
+                                System.out.println("data = "+nameNode);
+                                if (nameNode.path("code").asText().equals("200")) {
+                                    if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
+//                                        response.path("noSep_Kunjungan").asText(),
+                                        NoSEP.getText(),
+                                        TResep.getText(),
+                                        tbObat.getValueAt(i,2).toString(),
+                                        tbObat.getValueAt(i,3).toString(),
+                                        tbObat.getValueAt(i,1).toString(),
+                                        tbObat.getValueAt(i,4).toString(),
+                                        tbObat.getValueAt(i,5).toString(),
+                                        "0",
+                                        no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
+                                    }) == true) {
+                                        System.out.println("Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                        JOptionPane.showMessageDialog(null, "Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
                                     }
-
-                                    System.out.println("non racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
+                                } else {
+                                    System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                    JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
                                 }
-                            }
-                        }
 
-                    } else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 1) {
-                        URL = link + "/obatnonracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbObat.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"non racikan\"\n"
-                                            + "        }     ";
-                                    System.out.println("Request JSON: " + requestJson);
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbObat.getValueAt(i, 2).toString(),
-                                            tbObat.getValueAt(i, 3).toString(),
-                                            tbObat.getValueAt(i, 1).toString(),
-                                            tbObat.getValueAt(i, 4).toString(),
-                                            tbObat.getValueAt(i, 5).toString(),
-                                            "0",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                    }
-
-                                    System.out.println("non racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
+                                System.out.println("non racikan = \n\n"+requestJson);
+                            } catch (Exception ex) {
+                                System.out.println("Notifikasi : " + ex);
+                                if (ex.toString().contains("UnknownHostException")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                                 }
-                            }
-                        }
-                    } else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 2) {
-                        URL = link + "/obatnonracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbObat.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbObat.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbObat.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbObat.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbObat.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"non racikan\"\n"
-                                            + "        }     ";
-                                    System.out.println("Request JSON: " + requestJson);
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbObat.getValueAt(i, 2).toString(),
-                                            tbObat.getValueAt(i, 3).toString(),
-                                            tbObat.getValueAt(i, 1).toString(),
-                                            tbObat.getValueAt(i, 4).toString(),
-                                            tbObat.getValueAt(i, 5).toString(),
-                                            "0",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat " + tbObat.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                    }
-
-                                    System.out.println("non racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
-                                }
-                            }
+                            }            
                         }
                     }
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                    if (ex.toString().contains("UnknownHostException")) {
-                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                
+                } else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 1) {
+                    URL = link + "/obatnonracikan/v3/insert";
+                    System.out.println(URL);    
+                    for(i=0;i<tbObat.getRowCount();i++){
+                        if(Valid.SetAngka(tbObat.getValueAt(i,1).toString())>0){   
+                            try {
+                                requestJson = "{\n"
+                                                    + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='"+TResep.getText()+"'") + "\",\n"
+                                                    + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                                    + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbObat.getValueAt(i,2).toString()) + "\",\n"
+                                                    + "            \"SIGNA1OBT\": " + tbObat.getValueAt(i,4).toString() + ",\n"
+                                                    + "            \"SIGNA2OBT\": " + tbObat.getValueAt(i,5).toString() + ",\n"
+                                                    + "            \"JMLOBT\": " + tbObat.getValueAt(i,1).toString() + ",\n"
+                                                    + "            \"JHO\": " + tbObat.getValueAt(i,6).toString() + ",\n"
+                                                    + "            \"CatKhsObt\": \"non racikan\"\n"
+                                                    + "        }     ";
+                                System.out.println("Request JSON: " + requestJson);
+                                requestEntity = new HttpEntity(requestJson, headers);
+                                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                nameNode = root.path("metaData");
+                                System.out.println("data = "+nameNode);
+                                if (nameNode.path("code").asText().equals("200")) {
+                                    if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS", 9, new String[]{
+//                                        response.path("noSep_Kunjungan").asText(),
+                                        NoSEP.getText(),
+                                        TResep.getText(),
+                                        tbObat.getValueAt(i,2).toString(),
+                                        tbObat.getValueAt(i,3).toString(),
+                                        tbObat.getValueAt(i,1).toString(),
+                                        tbObat.getValueAt(i,4).toString(),
+                                        tbObat.getValueAt(i,5).toString(),
+                                        "0",
+                                        no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
+                                    }) == true) {
+                                        System.out.println("Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                        JOptionPane.showMessageDialog(null, "Obat "+tbObat.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                    }
+                                } else {
+                                    System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                    JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                }
+
+                                System.out.println("non racikan = \n\n"+requestJson);
+                            } catch (Exception ex) {
+                                System.out.println("Notifikasi : " + ex);
+                                if (ex.toString().contains("UnknownHostException")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                }
+                            }            
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);  
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                     }
                 }
             }
         }
     }
 
-    private void InsertObatRacikan() {
-        if (TNoRw.getText().trim().equals("")) {
-            Valid.textKosong(TNoRw, "No Rawat");
-        } else if (NoSEP.getText().trim().equals("")) {
-            Valid.textKosong(NoSEP, "Nomor Sep");
-        } else if (KdDPJP.getText().trim().equals("")) {
-            Valid.textKosong(KdDPJP, "Dokter");
-        } else if (KdPoli.getText().trim().equals("")) {
-            Valid.textKosong(KdPoli, "Poliklinik");
-        } else if (TResep.getText().trim().equals("")) {
-            Valid.textKosong(TResep, "Nomor Resep");
-        } else if (Lahir.getText().trim().equals("")) {
-            Valid.textKosong(Lahir, "Lahir");
-        } else {
-            int reply = JOptionPane.showConfirmDialog(rootPane, "Eeiiiiiits, udah bener belum data yang mau disimpan..?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                try {
-                    headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
-                    utc = String.valueOf(api.GetUTCdatetimeAsString());
-                    headers.add("x-timestamp", utc);
-                    headers.add("x-signature", api.getHmac(utc));
-                    headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
-                    requestEntity = new HttpEntity(headers);
-
+    
+    
+    private void InsertObatRacikan(){
+    if(TNoRw.getText().trim().equals("")){
+        Valid.textKosong(TNoRw,"No Rawat");
+    }else if(NoSEP.getText().trim().equals("")){
+        Valid.textKosong(NoSEP,"Nomor Sep");                                      
+    }else if(KdDPJP.getText().trim().equals("")){
+        Valid.textKosong(KdDPJP,"Dokter");                                      
+    }else if(KdPoli.getText().trim().equals("")){
+        Valid.textKosong(KdPoli,"Poliklinik");                                      
+    }else if(TResep.getText().trim().equals("")){
+        Valid.textKosong(TResep,"Nomor Resep");                                      
+    }else if(Lahir.getText().trim().equals("")){
+        Valid.textKosong(Lahir,"Lahir");                                      
+    }else{
+        int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, udah bener belum data yang mau disimpan..?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            try { 
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.add("x-cons-id", koneksiDB.CONSIDAPIAPOTEKBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("x-timestamp", utc);
+                headers.add("x-signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIAPOTEKBPJS());
+                requestEntity = new HttpEntity(headers);
+                
 //                cek resep yang sdh ada
-                    if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 0) {
-                        URL = link + "/obatracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                            + "        }     ";
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                            "1",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
+                if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 0) {
+                    URL = link + "/obatracikan/v3/insert";
+                    System.out.println(URL);
+                    for(i=0;i<tbDetailObatRacikan.getRowCount();i++){ 
+                        if(Valid.SetAngka(tbDetailObatRacikan.getValueAt(i,1).toString())>0){
+                            try {
+                                requestJson = "{\n"
+                                        + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='"+TResep.getText()+"'") + "\",\n"
+                                        + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                        + "            \"JNSROBT\": \"R.0"+(tbDetailObatRacikan.getValueAt(i,0).toString())+"\",\n"
+                                        + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                        + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                        + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i,4).toString() + ",\n"
+                                        + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i,5).toString() + ",\n"
+                                        + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i,7).toString() + ",\n"
+                                        + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i,1).toString() + ",\n"
+                                        + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i,6).toString() + ",\n"
+                                        + "            \"CatKhsObt\": \"RACIKAN "+(i+1)+"\"\n"
+                                        + "        }     ";
+                                requestEntity = new HttpEntity(requestJson, headers);
+                                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                nameNode = root.path("metaData");
+                                System.out.println("data = "+nameNode);
+                                if (nameNode.path("code").asText().equals("200")) {
+                                    if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
+//                                        response.path("noSep_Kunjungan").asText(),
+                                        NoSEP.getText(),
+                                        TResep.getText(),
+                                        tbDetailObatRacikan.getValueAt(i,2).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,3).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,1).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,4).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,5).toString(),
+                                        "1",
+                                        no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
+                                    }) == true) {
+                                        System.out.println("Obat "+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                        JOptionPane.showMessageDialog(null, "Obat racikan"+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
                                     }
-
-                                    System.out.println("racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
+                                } else {
+                                    System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                    JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
                                 }
-                            }
-                        }
-                    } else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 1) {
-                        URL = link + "/obatracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                            + "        }     ";
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                            "1",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                    }
 
-                                    System.out.println("racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
+                                System.out.println("racikan = \n\n"+requestJson);
+                            } catch (Exception ex) {
+                                System.out.println("Notifikasi : " + ex);
+                                if (ex.toString().contains("UnknownHostException")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                                 }
-                            }
-                        }
-                    } else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 2) {
-                        URL = link + "/obatracikan/v3/insert";
-                        System.out.println(URL);
-                        for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                            if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 1).toString()) > 0) {
-                                try {
-                                    requestJson = "{\n"
-                                            + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'") + "\",\n"
-                                            + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
-                                            + "            \"JNSROBT\": \"R.0" + (tbDetailObatRacikan.getValueAt(i, 0).toString()) + "\",\n"
-                                            + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?", tbDetailObatRacikan.getValueAt(i, 2).toString()) + "\",\n"
-                                            + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i, 4).toString() + ",\n"
-                                            + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i, 5).toString() + ",\n"
-                                            + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i, 7).toString() + ",\n"
-                                            + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i, 1).toString() + ",\n"
-                                            + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i, 6).toString() + ",\n"
-                                            + "            \"CatKhsObt\": \"RACIKAN " + (i + 1) + "\"\n"
-                                            + "        }     ";
-                                    requestEntity = new HttpEntity(requestJson, headers);
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    nameNode = root.path("metaData");
-                                    System.out.println("data = " + nameNode);
-                                    if (nameNode.path("code").asText().equals("200")) {
-                                        if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
-                                            //                                        response.path("noSep_Kunjungan").asText(),
-                                            NoSEP.getText(),
-                                            TResep.getText(),
-                                            tbDetailObatRacikan.getValueAt(i, 2).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 3).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 1).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 4).toString(),
-                                            tbDetailObatRacikan.getValueAt(i, 5).toString(),
-                                            "1",
-                                            no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
-                                        }) == true) {
-                                            System.out.println("Obat " + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                            JOptionPane.showMessageDialog(null, "Obat racikan" + tbDetailObatRacikan.getValueAt(i, 3).toString() + " Berhasil disimpan");
-                                        }
-                                    } else {
-                                        System.out.println("Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                        JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, " + nameNode.path("message").asText());
-                                    }
-
-                                    System.out.println("racikan = \n\n" + requestJson);
-                                } catch (Exception ex) {
-                                    System.out.println("Notifikasi : " + ex);
-                                    if (ex.toString().contains("UnknownHostException")) {
-                                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
-                                    }
-                                }
-                            }
+                            }  
                         }
                     }
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                    if (ex.toString().contains("UnknownHostException")) {
-                        JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                }
+                
+                else if (!Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'").isEmpty() && Iterasi.getSelectedIndex() == 1) {
+                    URL = link + "/obatracikan/v3/insert";
+                    System.out.println(URL);
+                    for(i=0;i<tbDetailObatRacikan.getRowCount();i++){ 
+                        if(Valid.SetAngka(tbDetailObatRacikan.getValueAt(i,1).toString())>0){
+                            try {
+                                requestJson = "{\n"
+                                        + "            \"NOSJP\": \"" + Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='"+TResep.getText()+"'") + "\",\n"
+                                        + "            \"NORESEP\": \"" + TResep.getText() + "\",\n"
+                                        + "            \"JNSROBT\": \"R.0"+(tbDetailObatRacikan.getValueAt(i,0).toString())+"\",\n"
+                                        + "            \"KDOBT\": \"" + Sequel.cariIsi("SELECT kode_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                        + "            \"NMOBAT\": \"" + Sequel.cariIsi("SELECT nama_brng_apotek_bpjs FROM maping_obat_apotek_bpjs WHERE kode_brng=?",tbDetailObatRacikan.getValueAt(i,2).toString()) + "\",\n"
+                                        + "            \"SIGNA1OBT\": " + tbDetailObatRacikan.getValueAt(i,4).toString() + ",\n"
+                                        + "            \"SIGNA2OBT\": " + tbDetailObatRacikan.getValueAt(i,5).toString() + ",\n"
+                                        + "            \"PERMINTAAN\": " + tbDetailObatRacikan.getValueAt(i,7).toString() + ",\n"
+                                        + "            \"JMLOBT\": " + tbDetailObatRacikan.getValueAt(i,1).toString() + ",\n"
+                                        + "            \"JHO\": " + tbDetailObatRacikan.getValueAt(i,6).toString() + ",\n"
+                                        + "            \"CatKhsObt\": \"RACIKAN "+(i+1)+"\"\n"
+                                        + "        }     ";
+                                requestEntity = new HttpEntity(requestJson, headers);
+                                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                nameNode = root.path("metaData");
+                                System.out.println("data = "+nameNode);
+                                if (nameNode.path("code").asText().equals("200")) {
+                                    if (Sequel.menyimpantf("bridging_apotek_bpjs_obat", "?,?,?,?,?,?,?,?,?", "Simpan Obat Apotek BPJS Racikan", 9, new String[]{
+//                                        response.path("noSep_Kunjungan").asText(),
+                                        NoSEP.getText(),
+                                        TResep.getText(),
+                                        tbDetailObatRacikan.getValueAt(i,2).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,3).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,1).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,4).toString(),
+                                        tbDetailObatRacikan.getValueAt(i,5).toString(),
+                                        "1",
+                                        no_apotek = Sequel.cariIsi("select no_apotek from bridging_apotek_bpjs where no_resep='" + TResep.getText() + "'")
+                                    }) == true) {
+                                        System.out.println("Obat "+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                        JOptionPane.showMessageDialog(null, "Obat racikan"+tbDetailObatRacikan.getValueAt(i,3).toString()+" Berhasil disimpan");
+                                    }
+                                } else {
+                                    System.out.println("Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                    JOptionPane.showMessageDialog(null, "Obat Gagal Simpan, "+nameNode.path("message").asText());
+                                }
+
+                                System.out.println("racikan = \n\n"+requestJson);
+                            } catch (Exception ex) {
+                                System.out.println("Notifikasi : " + ex);
+                                if (ex.toString().contains("UnknownHostException")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+                                }
+                            }  
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);  
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                     }
                 }
             }
