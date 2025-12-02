@@ -482,7 +482,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         panelisi3.setPreferredSize(new java.awt.Dimension(100, 43));
         panelisi3.setLayout(new java.awt.GridBagLayout());
 
-        BtnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16i.png"))); // NOI18N
         BtnSimpan.setMnemonic('S');
         BtnSimpan.setText("Simpan");
         BtnSimpan.setToolTipText("Alt+S");
@@ -495,7 +495,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         });
         panelisi3.add(BtnSimpan, new java.awt.GridBagConstraints());
 
-        BtnSimpan1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnSimpan1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16i.png"))); // NOI18N
         BtnSimpan1.setMnemonic('S');
         BtnSimpan1.setText("Simpan Resep Kosong");
         BtnSimpan1.setToolTipText("Alt+S");
@@ -508,7 +508,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         });
         panelisi3.add(BtnSimpan1, new java.awt.GridBagConstraints());
 
-        BtnSimpan2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnSimpan2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16i.png"))); // NOI18N
         BtnSimpan2.setMnemonic('S');
         BtnSimpan2.setText("INSERT OBAT NON RACIKAN");
         BtnSimpan2.setToolTipText("Alt+S");
@@ -522,7 +522,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         });
         panelisi3.add(BtnSimpan2, new java.awt.GridBagConstraints());
 
-        BtnSimpan3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnSimpan3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16i.png"))); // NOI18N
         BtnSimpan3.setMnemonic('S');
         BtnSimpan3.setText("INSERT OBAT RACIKAN");
         BtnSimpan3.setToolTipText("Alt+S");
@@ -536,7 +536,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         });
         panelisi3.add(BtnSimpan3, new java.awt.GridBagConstraints());
 
-        CariDataObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
+        CariDataObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/find (1).png"))); // NOI18N
         CariDataObat.setText("Data obat");
         CariDataObat.setToolTipText("");
         CariDataObat.setName("CariDataObat"); // NOI18N
@@ -553,7 +553,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         });
         panelisi3.add(CariDataObat, new java.awt.GridBagConstraints());
 
-        BtnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/stop_f2.png"))); // NOI18N
+        BtnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/delete_item_32.png"))); // NOI18N
         BtnHapus.setMnemonic('H');
         BtnHapus.setText("Hapus");
         BtnHapus.setToolTipText("Alt+H");
@@ -601,10 +601,10 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         Jam.setHighlighter(null);
         Jam.setName("Jam"); // NOI18N
         FormInput.add(Jam);
-        Jam.setBounds(510, 130, 180, 24);
+        Jam.setBounds(510, 130, 180, 26);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-02-2025" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-11-2025" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -701,7 +701,7 @@ public final class ApotekBPJSKirimObat extends javax.swing.JDialog {
         LblNoRawat.setBounds(72, 10, 123, 23);
 
         TanggalPelayanan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPelayanan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-02-2025" }));
+        TanggalPelayanan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-11-2025" }));
         TanggalPelayanan.setDisplayFormat("dd-MM-yyyy");
         TanggalPelayanan.setName("TanggalPelayanan"); // NOI18N
         TanggalPelayanan.setOpaque(false);
@@ -1458,16 +1458,22 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         if (tbObat.getSelectedRow()!= -1) {
-            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat "+tbObat.getValueAt(tbObat.getSelectedRow(), 3)+" ("+tbObat.getValueAt(tbObat.getSelectedRow(), 1)+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+            String namaObat = tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString();
+            String jumlah = tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString();
+            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat "+namaObat+" ("+jumlah+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 tabModeobat.removeRow(tbObat.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Obat "+namaObat+" berhasil dihapus dari daftar");
             }
         }
-        
+
         if (tbDetailObatRacikan.getSelectedRow()!= -1) {
-            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat RACIKAN "+tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 3)+" ("+tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 1)+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+            String namaObatRacikan = tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 3).toString();
+            String jumlahRacikan = tbDetailObatRacikan.getValueAt(tbDetailObatRacikan.getSelectedRow(), 1).toString();
+            int reply = JOptionPane.showConfirmDialog(rootPane,"Yakin mau dihapus obat RACIKAN "+namaObatRacikan+" ("+jumlahRacikan+") ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 tabModeDetailObatRacikan.removeRow(tbDetailObatRacikan.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Obat racikan "+namaObatRacikan+" berhasil dihapus dari daftar");
             }
         }
     }//GEN-LAST:event_BtnHapusActionPerformed
