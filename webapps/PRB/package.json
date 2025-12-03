@@ -1,0 +1,34 @@
+{
+  "name": "prb-application",
+  "version": "2.0.0",
+  "description": "PRB (Program Rujuk Balik) Management System - Full Stack JavaScript",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "dev:css": "tailwindcss -i assets/css/styles.css -o assets/css/styles.min.css --watch",
+    "build": "tailwindcss -i assets/css/styles.css -o assets/css/styles.min.css --minify",
+    "build:prod": "NODE_ENV=production tailwindcss -i assets/css/styles.css -o assets/css/styles.min.css --minify"
+  },
+  "keywords": [
+    "prb",
+    "bpjs",
+    "healthcare",
+    "patient-management",
+    "nodejs",
+    "express"
+  ],
+  "author": "SIMRS Khanza Development Team",
+  "license": "PROPRIETARY",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0-alpha.25",
+    "tailwindcss": "^4.0.0-alpha.25",
+    "nodemon": "^3.0.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  }
+}

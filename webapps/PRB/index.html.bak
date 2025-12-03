@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRB - Program Rujuk Balik</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">PRB Management</h1>
+                        <p class="text-xs text-gray-500">Program Rujuk Balik</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-600" id="server-status">
+                        <span class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        Connected
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Filter Section -->
+        <div class="card mb-6">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Filter Data Pasien</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                <!-- Search -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
+                    <input type="text" id="search" class="input-field"
+                        placeholder="No. Kartu, Nama, No. SEP, No. Rawat...">
+                </div>
+
+                <!-- Date From -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Dari</label>
+                    <input type="date" id="date-from" class="input-field">
+                </div>
+
+                <!-- Date To -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sampai</label>
+                    <input type="date" id="date-to" class="input-field">
+                </div>
+
+                <!-- PRB Filter -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status PRB</label>
+                    <select id="prb-filter" class="input-field">
+                        <option value="">Semua Status</option>
+                        <option value="prb">PRB</option>
+                        <option value="tidak_prb">Tidak PRB</option>
+                        <option value="potensi_prb">Potensi PRB</option>
+                    </select>
+                </div>
+
+                <!-- PRB Document Filter -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Dokumen PRB</label>
+                    <select id="prb-document-filter" class="input-field">
+                        <option value="">Semua</option>
+                        <option value="has_prb_number">Ada No. Surat PRB</option>
+                        <option value="no_prb_number">Tidak Ada No. Surat PRB</option>
+                    </select>
+                </div>
+
+                <!-- Records Per Page -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Data Per Halaman</label>
+                    <select id="records-per-page" class="input-field">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="unlimited">Unlimited</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 flex-wrap">
+                <button id="btn-search" class="btn-primary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Cari
+                </button>
+                <button id="btn-reset" class="btn-secondary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                        </path>
+                    </svg>
+                    Reset
+                </button>
+                <button id="btn-export" class="btn-secondary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    Export Excel
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <p class="mt-2 text-gray-600">Memuat data...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden alert alert-error mb-4"></div>
+
+        <!-- Info Message -->
+        <div id="info-message" class="card mb-4">
+            <p class="text-sm text-gray-600">
+                Total: <span id="total-records" class="font-semibold text-primary-600">0</span> pasien
+            </p>
+        </div>
+
+        <!-- Table Container -->
+        <div class="card overflow-hidden">
+            <div class="overflow-x-auto scrollbar-thin">
+                <table id="patients-table" class="w-full">
+                    <thead>
+                        <tr class="table-header">
+                            <th class="px-4 py-3">No</th>
+                            <th class="px-4 py-3">Tgl Kunjungan</th>
+                            <th class="px-4 py-3">No. Rawat</th>
+                            <th class="px-4 py-3">No. RM</th>
+                            <th class="px-4 py-3">No. Kartu</th>
+                            <th class="px-4 py-3">Kelas Rawat</th>
+                            <th class="px-4 py-3">Nama Pasien</th>
+                            <th class="px-4 py-3">Tgl Lahir</th>
+                            <th class="px-4 py-3">Jenis Kelamin</th>
+                            <th class="px-4 py-3">No. Telepon</th>
+                            <th class="px-4 py-3">Poliklinik</th>
+                            <th class="px-4 py-3">Dokter</th>
+                            <th class="px-4 py-3">No. SEP</th>
+                            <th class="px-4 py-3">Tgl SEP</th>
+                            <th class="px-4 py-3">Tgl Rujukan</th>
+                            <th class="px-4 py-3">No. Rujukan</th>
+                            <th class="px-4 py-3">PPK Rujukan</th>
+                            <th class="px-4 py-3">Jenis Peserta</th>
+                            <th class="px-4 py-3">Kode Diagnosa Awal</th>
+                            <th class="px-4 py-3">Diagnosa Awal</th>
+                            <th class="px-4 py-3">PRB</th>
+                            <th class="px-4 py-3">Catatan SEP</th>
+                            <th class="px-4 py-3">Petugas Pembuat SEP</th>
+                            <th class="px-4 py-3">No. Surat PRB</th>
+                            <th class="px-4 py-3">Tgl PRB</th>
+                            <th class="px-4 py-3">Dokter DPJP</th>
+                            <th class="px-4 py-3">Diagnosa PRB</th>
+                            <th class="px-4 py-3">Petugas Pembuat PRB</th>
+                            <th class="px-4 py-3">Obat Details</th>
+                            <th class="px-4 py-3">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patients-tbody">
+                        <tr>
+                            <td colspan="30" class="text-center py-8 text-gray-500">
+                                Tidak ada data. Silakan gunakan filter untuk mencari data.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination-container" class="pagination mt-6"></div>
+    </main>
+
+    <!-- Modal for Patient Details -->
+    <div id="patient-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b">
+                <h3 class="text-xl font-bold text-gray-900">Detail Pasien</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-content" class="space-y-4">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/app.js"></script>
+</body>
+
+</html>

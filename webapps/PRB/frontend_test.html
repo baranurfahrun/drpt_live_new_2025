@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Test for Records Per Page</title>
+</head>
+<body>
+    <h1>Frontend Test for Records Per Page</h1>
+    
+    <label for="recordsPerPage">Records Per Page:</label>
+    <select id="recordsPerPage" onchange="changeRecordsPerPage()">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+    
+    <div id="recordInfo"></div>
+    <div id="pagination"></div>
+    <table id="patientsTable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody id="patientsTableBody">
+        </tbody>
+    </table>
+    
+    <script>
+        // Application state
+        let currentPage = 1;
+        let totalPages = 1;
+        let recordsPerPage = 10;
+        
+        // Initialize
+        document.getElementById('recordsPerPage').value = recordsPerPage;
+        
+        // Mock data for testing
+        function getMockPatients(page, limit) {
+            const totalRecords = 1000;
+            const totalPages = Math.ceil(totalRecords / limit);
+            
+            // Ensure page doesn't exceed total pages
+            if (page > totalPages && totalPages > 0) {
+                page = totalPages;
+            }
+            
+            const startRecord = ((page - 1) * limit) + 1;
+            const endRecord = Math.min(page * limit, totalRecords);
+            const data = [];
+            
+            for (let i = startRecord; i <= endRecord; i++) {
+                data.push({
+                    id: i,
+                    name: `Patient ${i}`
+                });
+            }
+            
+            return {
+                success: true,
+                data: data,
+                pagination: {
+                    current_page: page,
+                    total_pages: totalPages,
+                    total_records: totalRecords,
+                    limit: limit
+                }
+            };
+        }
+        
+        // Simulate loadPatients function
+        function loadPatients(page = 1, limit = 10) {
+            console.log(`Loading page ${page} with ${limit} records per page`);
+            
+            // Get mock data
+            const result = getMockPatients(page, limit);
+            
+            if (result.success) {
+                displayPatients(result.data, result.pagination.limit);
+                updatePagination(result.pagination);
+                currentPage = result.pagination.current_page;
+                totalPages = result.pagination.total_pages;
+                
+                // Display total records info
+                if (result.pagination.total_records > 0) {
+                    const startRecord = ((currentPage - 1) * result.pagination.limit) + 1;
+                    const endRecord = Math.min(currentPage * result.pagination.limit, result.pagination.total_records);
+                    document.getElementById('recordInfo').innerHTML = `Menampilkan ${startRecord} - ${endRecord} dari ${result.pagination.total_records} data`;
+                    // Update the global recordsPerPage to match the current limit
+                    recordsPerPage = result.pagination.limit;
+                } else {
+                    document.getElementById('recordInfo').innerHTML = 'Tidak ada data ditemukan';
+                }
+            }
+        }
+        
+        // Display patients
+        function displayPatients(patients, limit) {
+            const tbody = document.getElementById('patientsTableBody');
+            
+            if (!patients || patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Tidak ada data ditemukan.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = patients.map((patient, index) => {
+                const rowNumber = ((currentPage - 1) * limit) + index + 1;
+                
+                return `
+                    <tr>
+                        <td>${rowNumber}</td>
+                        <td>${patient.name}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // Update pagination
+        function updatePagination(pagination) {
+            const paginationDiv = document.getElementById('pagination');
+            
+            if (!pagination || pagination.total_pages <= 1) {
+                paginationDiv.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            if (pagination.current_page > 1) {
+                paginationHTML += `<button onclick="changePage(${pagination.current_page - 1})"> Prev</button>`;
+            } else {
+                paginationHTML += `<button disabled> Prev</button>`;
+            }
+            
+            // Page numbers - simplified for testing
+            for (let i = 1; i <= Math.min(10, pagination.total_pages); i++) {
+                const activeClass = i === pagination.current_page ? 'active' : '';
+                paginationHTML += `<button class="${activeClass}" onclick="changePage(${i})">${i}</button>`;
+            }
+            
+            // Next button
+            if (pagination.current_page < pagination.total_pages) {
+                paginationHTML += `<button onclick="changePage(${pagination.current_page + 1})">Next </button>`;
+            } else {
+                paginationHTML += `<button disabled>Next </button>`;
+            }
+            
+            paginationDiv.innerHTML = paginationHTML;
+        }
+        
+        // Change page
+        function changePage(page) {
+            if (page >= 1 && page <= totalPages) {
+                loadPatients(page, recordsPerPage);
+            }
+        }
+        
+        // Change records per page
+        function changeRecordsPerPage() {
+            recordsPerPage = parseInt(document.getElementById('recordsPerPage').value);
+            currentPage = 1;
+            console.log('Records per page changed to:', recordsPerPage);
+            loadPatients(currentPage, recordsPerPage);
+        }
+        
+        // Initialize with default data
+        loadPatients(1, 10);
+    </script>
+    
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .active {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        button {
+            padding: 5px 10px;
+            margin: 2px;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+        }
+    </style>
+</body>
+</html>

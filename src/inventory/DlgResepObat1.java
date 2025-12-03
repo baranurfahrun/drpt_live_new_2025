@@ -743,7 +743,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         panelGlass8.setPreferredSize(new java.awt.Dimension(44, 44));
         panelGlass8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
 
-        BtnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16i.png"))); // NOI18N
         BtnSimpan.setMnemonic('S');
         BtnSimpan.setText("Simpan");
         BtnSimpan.setToolTipText("Alt+S");
@@ -779,7 +779,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         });
         panelGlass8.add(BtnBatal);
 
-        BtnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/stop_f2.png"))); // NOI18N
+        BtnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/delete_item_32.png"))); // NOI18N
         BtnHapus.setMnemonic('H');
         BtnHapus.setText("Hapus");
         BtnHapus.setToolTipText("Alt+H");
@@ -815,7 +815,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         });
         panelGlass8.add(BtnPrint);
 
-        BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
+        BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/find (1).png"))); // NOI18N
         BtnAll.setMnemonic('M');
         BtnAll.setText("Semua");
         BtnAll.setToolTipText("Alt+M");
@@ -874,7 +874,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-11-2024 00:10:04" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-12-2025 17:01:13" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -888,7 +888,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-11-2024 00:10:04" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-12-2025 17:01:13" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -1018,7 +1018,7 @@ public final class DlgResepObat1 extends javax.swing.JDialog {
         jLabel8.setBounds(0, 42, 95, 23);
 
         DTPBeri.setForeground(new java.awt.Color(50, 70, 50));
-        DTPBeri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-11-2024" }));
+        DTPBeri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-12-2025" }));
         DTPBeri.setDisplayFormat("dd-MM-yyyy");
         DTPBeri.setName("DTPBeri"); // NOI18N
         DTPBeri.setOpaque(false);
@@ -2237,6 +2237,75 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             param.put("jam", cmbJam.getSelectedItem() + ":" + cmbMnt.getSelectedItem() + ":" + cmbDtk.getSelectedItem());
             param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
             param.put("photo", "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penyerahanresep/" + Sequel.cariIsi("select bukti_penyerahan_resep_obat.photo from bukti_penyerahan_resep_obat where bukti_penyerahan_resep_obat.no_resep=?", NoResep.getText()));
+
+            // Tambahan parameter untuk Alamat, Umur, No.Hp, Berat Badan
+            param.put("alamat", Sequel.cariIsi("select pasien.alamat from pasien where pasien.no_rkm_medis=?", TNoRm.getText()));
+            param.put("sttsumur", Sequel.cariIsi("select concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur) from reg_periksa where reg_periksa.no_rawat=?", TNoRw.getText()));
+            param.put("notlp", Sequel.cariIsi("select pasien.no_tlp from pasien where pasien.no_rkm_medis=?", TNoRm.getText()));
+
+            // Query untuk Berat Badan dari pemeriksaan_ralan DAN pemeriksaan_ranap
+            String beratBadan = "";
+            PreparedStatement psBerat = null;
+            ResultSet rsBerat = null;
+            try {
+                // UNION query untuk cek kedua tabel (ranap dan ralan), ambil yang terbaru
+                psBerat = koneksi.prepareStatement(
+                    "SELECT berat, tgl_perawatan, jam_rawat FROM pemeriksaan_ranap WHERE no_rawat=? " +
+                    "UNION ALL " +
+                    "SELECT berat, tgl_perawatan, jam_rawat FROM pemeriksaan_ralan WHERE no_rawat=? " +
+                    "ORDER BY tgl_perawatan DESC, jam_rawat DESC LIMIT 1");
+                psBerat.setString(1, TNoRw.getText());
+                psBerat.setString(2, TNoRw.getText());
+                rsBerat = psBerat.executeQuery();
+                if (rsBerat.next()) {
+                    beratBadan = rsBerat.getString("berat") != null ? rsBerat.getString("berat") : "";
+                }
+            } catch (Exception e) {
+                System.out.println("Error get berat badan: " + e);
+            } finally {
+                try {
+                    if (rsBerat != null) rsBerat.close();
+                    if (psBerat != null) psBerat.close();
+                } catch (Exception e) {
+                    System.out.println("Error closing berat resources: " + e);
+                }
+            }
+            param.put("brbadan", beratBadan);
+
+            // Query untuk Ruangan (prioritas: Kamar Inap > Poliklinik)
+            String ruangan = "";
+            PreparedStatement psRuangan = null;
+            ResultSet rsRuangan = null;
+            try {
+                psRuangan = koneksi.prepareStatement(
+                    "SELECT COALESCE(" +
+                    "    (SELECT CONCAT(bangsal.nm_bangsal, ' - ', kamar.kd_kamar) " +
+                    "     FROM kamar_inap " +
+                    "     INNER JOIN kamar ON kamar_inap.kd_kamar = kamar.kd_kamar " +
+                    "     INNER JOIN bangsal ON kamar.kd_bangsal = bangsal.kd_bangsal " +
+                    "     WHERE kamar_inap.no_rawat = ? AND kamar_inap.stts_pulang = '-' " +
+                    "     ORDER BY kamar_inap.tgl_masuk DESC LIMIT 1), " +
+                    "    (SELECT nm_poli FROM reg_periksa " +
+                    "     INNER JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli " +
+                    "     WHERE reg_periksa.no_rawat = ?)" +
+                    ") AS ruangan");
+                psRuangan.setString(1, TNoRw.getText());
+                psRuangan.setString(2, TNoRw.getText());
+                rsRuangan = psRuangan.executeQuery();
+                if (rsRuangan.next()) {
+                    ruangan = rsRuangan.getString("ruangan") != null ? rsRuangan.getString("ruangan") : "";
+                }
+            } catch (Exception e) {
+                System.out.println("Error get ruangan: " + e);
+            } finally {
+                try {
+                    if (rsRuangan != null) rsRuangan.close();
+                    if (psRuangan != null) psRuangan.close();
+                } catch (Exception e) {
+                    System.out.println("Error closing ruangan resources: " + e);
+                }
+            }
+            param.put("ruangan", ruangan);
 
             Valid.MyReportqry("rptLembarObat3.jasper","report","::[ Lembar Pemberian Obat ]::","select * from temporary_resep where temporary_resep.temp37='"+akses.getalamatip()+"' order by temporary_resep.no",param);
             this.setCursor(Cursor.getDefaultCursor());

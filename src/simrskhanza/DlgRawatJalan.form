@@ -106,7 +106,7 @@
                 <Component class="widget.Button" name="BtnSimpan">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/picture/save-16x16.png"/>
+                      <Image iconType="3" name="/picture/save-16x16i.png"/>
                     </Property>
                     <Property name="mnemonic" type="int" value="83"/>
                     <Property name="text" type="java.lang.String" value="Simpan"/>
@@ -142,7 +142,7 @@
                 <Component class="widget.Button" name="BtnHapus">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/picture/stop_f2.png"/>
+                      <Image iconType="3" name="/picture/delete_item_32.png"/>
                     </Property>
                     <Property name="mnemonic" type="int" value="72"/>
                     <Property name="text" type="java.lang.String" value="Hapus"/>
@@ -195,8 +195,8 @@
                 </Component>
                 <Component class="widget.Button" name="BtnAll">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/picture/Search-16x16.png"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/find (1).png"/>
                     </Property>
                     <Property name="mnemonic" type="int" value="77"/>
                     <Property name="text" type="java.lang.String" value="Semua"/>
@@ -284,7 +284,7 @@
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="1">
-                        <StringItem index="0" value="16-09-2025"/>
+                        <StringItem index="0" value="03-12-2025"/>
                       </StringArray>
                     </Property>
                     <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -312,7 +312,7 @@
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="1">
-                        <StringItem index="0" value="16-09-2025"/>
+                        <StringItem index="0" value="03-12-2025"/>
                       </StringArray>
                     </Property>
                     <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -6115,7 +6115,7 @@
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="1">
-                    <StringItem index="0" value="16-09-2025"/>
+                    <StringItem index="0" value="03-12-2025"/>
                   </StringArray>
                 </Property>
                 <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
