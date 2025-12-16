@@ -5449,7 +5449,7 @@ public final class DlgIGD extends javax.swing.JDialog {
                 }
                 tabMode.addRow(new Object[]{
                     false, TNoReg.getText(), TNoRw.getText(), Valid.SetTgl(DTPReg.getSelectedItem() + ""), CmbJam.getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.getSelectedItem(),
-                    KdDokter.getText(), TDokter.getText(), TNoRM.getText(), TPasien.getText(), JK.getText(), umur + " " + sttsumur, "IGD", TPngJwb.getText(), TAlmt.getText(), THbngn.getText(), Valid.SetAngka(biaya),
+                    KdDokter.getText(), TDokter.getText(), "", TNoRM.getText(), TPasien.getText(), JK.getText(), umur + " " + sttsumur, "IGD", TPngJwb.getText(), TAlmt.getText(), THbngn.getText(), Valid.SetAngka(biaya),
                     TStatus.getText(), nmpnj.getText(), "Belum", kdpnj.getText(), "Belum Bayar"
                 });
                 emptTeks();
@@ -11477,14 +11477,14 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     // No.SEP diambil dari subquery yang sudah memprioritaskan Rawat Inap
-                    String noSEP = rs.getString("no_sep") != null ? rs.getString("no_sep") : "";
+                    String noSEP = rs.getString(7) != null ? rs.getString(7) : "";
 
                     tabMode.addRow(new Object[]{
                         false, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), noSEP, rs.getString(8), rs.getString(9),
                         rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14),
-                        rs.getString(15), Valid.SetAngka(rs.getDouble(16)), rs.getString(17), rs.getString(18), rs.getString(19),
-                        rs.getString("kd_pj"), rs.getString("status_bayar")
+                        rs.getString(15), Valid.SetAngka(rs.getDouble(16)), rs.getString(17), rs.getString(18),
+                        rs.getString(19), rs.getString(20), rs.getString(21)
                     });
                 }
             } catch (Exception e) {

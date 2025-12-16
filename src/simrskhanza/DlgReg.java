@@ -15661,7 +15661,7 @@ public void windowClosing(java.awt.event.WindowEvent e) {
             if (CrPoli.getText().trim().equals("") && CrDokter.getText().equals("") && TCari.equals("")) {
                 ps = koneksi.prepareStatement("select reg_periksa.no_reg,reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
                         + "reg_periksa.kd_dokter,dokter.nm_dokter,"
-                        + "(select no_sep from bridging_sep where bridging_sep.no_rawat=reg_periksa.no_rawat order by case when jnspelayanan='1' then 1 else 2 end limit 1) as no_sep,"
+                        + "(select no_sep from bridging_sep where bridging_sep.no_rawat=reg_periksa.no_rawat order by case when jnspelayanan='2' then 1 else 2 end limit 1) as no_sep,"
                         + "reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,poliklinik.nm_poli,"
                         + "reg_periksa.p_jawab,reg_periksa.almt_pj,reg_periksa.hubunganpj,reg_periksa.biaya_reg,reg_periksa.stts_daftar,penjab.png_jawab,pasien.no_tlp,reg_periksa.stts,reg_periksa.status_poli, "
                         + "reg_periksa.kd_poli,reg_periksa.kd_pj,reg_periksa.status_bayar from reg_periksa inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -15670,7 +15670,7 @@ public void windowClosing(java.awt.event.WindowEvent e) {
             } else {
                 ps = koneksi.prepareStatement("select reg_periksa.no_reg,reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
                         + "reg_periksa.kd_dokter,dokter.nm_dokter,"
-                        + "(select no_sep from bridging_sep where bridging_sep.no_rawat=reg_periksa.no_rawat order by case when jnspelayanan='1' then 1 else 2 end limit 1) as no_sep,"
+                        + "(select no_sep from bridging_sep where bridging_sep.no_rawat=reg_periksa.no_rawat order by case when jnspelayanan='2' then 1 else 2 end limit 1) as no_sep,"
                         + "reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,poliklinik.nm_poli,"
                         + "reg_periksa.p_jawab,reg_periksa.almt_pj,reg_periksa.hubunganpj,reg_periksa.biaya_reg,reg_periksa.stts_daftar,penjab.png_jawab,pasien.no_tlp,reg_periksa.stts,reg_periksa.status_poli, "
                         + "reg_periksa.kd_poli,reg_periksa.kd_pj,reg_periksa.status_bayar from reg_periksa inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -16430,6 +16430,22 @@ public void windowClosing(java.awt.event.WindowEvent e) {
         }
 
         if (ceksukses == true) {
+            // Auto-update nomor telepon di tabel pasien jika ada perubahan
+            try {
+                // Query no_tlp lama dari tabel pasien
+                String noTelpLama = Sequel.cariIsi("select no_tlp from pasien where no_rkm_medis=?", TNoRM.getText());
+                String noTelpBaru = NoHape.getText().trim();
+
+                // Update jika nomor berbeda dan nomor baru tidak kosong
+                if (!noTelpBaru.equals("") && !noTelpBaru.equals(noTelpLama)) {
+                    Sequel.mengedittf("pasien", "no_rkm_medis=?", "no_tlp=?", 2, new String[]{
+                        noTelpBaru, TNoRM.getText().trim()
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi update no_tlp: " + e);
+            }
+
             UpdateUmur();
             if (!AsalRujukan.getText().equals("")) {
                 Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(rujuk_masuk.no_rawat,4),signed)),0) from reg_periksa inner join rujuk_masuk on reg_periksa.no_rawat=rujuk_masuk.no_rawat where reg_periksa.tgl_registrasi='" + Valid.SetTgl(DTPReg.getSelectedItem() + "") + "' ", "BR/" + dateformat.format(DTPReg.getDate()) + "/", 4, NoBalasan);
@@ -16445,10 +16461,16 @@ public void windowClosing(java.awt.event.WindowEvent e) {
                 ctk();
             }
             if (TabRawat.getSelectedIndex() == 0) {
+                // Query no_sep untuk pasien yang baru disimpan (hanya SEP rawat jalan)
+                String noSEP = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat=? order by case when jnspelayanan='2' then 1 else 2 end limit 1", TNoRw.getText());
+                if (noSEP == null || noSEP.trim().isEmpty()) {
+                    noSEP = "";
+                }
+
                 tabMode.addRow(new Object[]{
                     false, TNoReg.getText(), TNoRw.getText(), Valid.SetTgl(DTPReg.getSelectedItem() + ""), CmbJam.getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.getSelectedItem(),
-                    KdDokter.getText(), TDokter.getText(), TNoRM.getText(), TPasien.getText(), JK.getText(), umur + " " + sttsumur, TPoli.getText(), nmpnj.getText(), TPngJwb.getText(), TAlmt.getText(),
-                    THbngn.getText(), Valid.SetAngka(Double.parseDouble(TBiaya.getText())), TStatus.getText(), NoTelp.getText(), "Belum", status, kdpoli.getText(), kdpnj.getText(), "Belum Bayar"
+                    KdDokter.getText(), TDokter.getText(), noSEP, TNoRM.getText(), TPasien.getText(), JK.getText(), umur + " " + sttsumur, TPoli.getText(), nmpnj.getText(), TPngJwb.getText(), TAlmt.getText(),
+                    THbngn.getText(), Valid.SetAngka(Double.parseDouble(TBiaya.getText())), TStatus.getText(), NoHape.getText().trim(), "Belum", status, kdpoli.getText(), kdpnj.getText(), "Belum Bayar"
                 });
             }
             emptTeks();

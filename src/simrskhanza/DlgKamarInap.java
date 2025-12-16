@@ -19228,21 +19228,13 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     + "pasien.agama from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
                     + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
-                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj left join bridging_sep on bridging_sep.no_rawat=kamar_inap.no_rawat "
+                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj left join bridging_sep on bridging_sep.no_rawat=kamar_inap.no_rawat and bridging_sep.jnspelayanan='1' "
                     + (namadokter.equals("") ? "where " + key + " " + order : "inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='" + namadokter + "' and " + key + " " + order));
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    // Skip baris jika jenis pelayanan = "2" (Rawat Jalan) untuk menghindari data dobel
-                    if ("2".equals(rs.getString("jnspelayanan"))) {
-                        continue; // Lewati row ini, jangan tampilkan
-                    }
-
-                    // Tampilkan No. SEP hanya jika jenis pelayanan = "1" (Rawat Inap)
-                    String noSEP = "";
-                    if ("1".equals(rs.getString("jnspelayanan"))) {
-                        noSEP = rs.getString("no_sep") != null ? rs.getString("no_sep") : "";
-                    }
+                    // Ambil No. SEP dari bridging_sep (hanya SEP rawat inap karena sudah difilter di JOIN)
+                    String noSEP = rs.getString("no_sep") != null ? rs.getString("no_sep") : "";
 
                     tabMode.addRow(new String[]{
                         rs.getString("no_rawat"), rs.getString("no_rkm_medis"), noSEP, rs.getString("nm_pasien") + " (" + rs.getString("umur") + ")",

@@ -711,7 +711,7 @@ Jelas]]></text>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="61" y="148" width="41" height="14" uuid="015c4173-371d-41e7-ab74-73cc0c4835d1">
+				<reportElement x="61" y="148" width="41" height="16" uuid="015c4173-371d-41e7-ab74-73cc0c4835d1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1026,7 +1026,7 @@ Obat]]></text>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="304" y="125" width="84" height="9" uuid="6a4c5ac0-c8d5-4b4e-b9e1-257c7ee0225b"/>
+				<reportElement x="304" y="125" width="112" height="9" uuid="6a4c5ac0-c8d5-4b4e-b9e1-257c7ee0225b"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
