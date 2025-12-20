@@ -2519,6 +2519,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         String noSurat = Sequel.cariIsi("select no_surat from bridging_surat_kontrol_bpjs where no_sep='" + NoSEP.getText() + "' ");
         String noTelp = Sequel.cariIsi("select no_tlp from pasien where no_rkm_medis='" + NoRM.getText() + "' ");
 
+        
+        if (noTelp.startsWith("08")) {
+            noTelp = "62" + noTelp.substring(1);
+        }
+
         // Membuat pesan WA
         String pesan = akses.getnamars() + "\n"
              //   + "\n" + akses.getkontakrs()
@@ -2576,6 +2581,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         String tanggaljamkirim = Valid.SetTgl(TanggalKontrol.getSelectedItem() + "") + " " + "00:00:01";
         String noSurat = Sequel.cariIsi("select no_surat from bridging_surat_kontrol_bpjs where no_sep='" + NoSEP.getText() + "' ");
         String noTelp = Sequel.cariIsi("select no_tlp from pasien where no_rkm_medis='" + NoRM.getText() + "' ");
+
+        // Konversi nomor telepon jika diawali dengan 08 menjadi 62
+        if (noTelp.startsWith("08")) {
+            noTelp = "62" + noTelp.substring(1);
+        }
 
         // Membuat pesan WA
         String pesan = akses.getnamars() + "\n"

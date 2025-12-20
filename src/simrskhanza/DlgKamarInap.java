@@ -243,7 +243,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         initComponents();
         initKamarInap();
         tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "Nomer RM", "No SEP", "Nama Pasien", "Alamat Pasien", "Penanggung Jawab", "Hubungan P.J.", "Jenis Bayar", "Kamar", "Tarif Kamar",
+            "No.Rawat", "Nomer RM", "No SEP", "Kelas", "Nama Pasien", "Alamat Pasien", "Penanggung Jawab", "Hubungan P.J.", "Jenis Bayar", "Kamar", "Tarif Kamar",
             "Diagnosa Awal", "Diagnosa Akhir", "Tgl.Masuk", "Jam Masuk", "Tgl.Keluar", "Jam Keluar",
             "Ttl.Biaya", "Stts.Pulang", "Lama", "Dokter P.J.", "Kamar", "Status Bayar", "Agama"
         }) {
@@ -258,51 +258,57 @@ public class DlgKamarInap extends javax.swing.JDialog {
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 22; i++) {
+        for (i = 0; i < 24; i++) {
             TableColumn column = tbKamIn.getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(105);
+                column.setPreferredWidth(105); // No.Rawat
             } else if (i == 1) {
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(70); // Nomer RM
             } else if (i == 2) {
-                column.setPreferredWidth(170);
+                column.setPreferredWidth(130); // No SEP
             } else if (i == 3) {
-                column.setPreferredWidth(150);
+                column.setPreferredWidth(50); // Kelas
             } else if (i == 4) {
-                column.setPreferredWidth(120);
+                column.setPreferredWidth(200); // Nama Pasien
             } else if (i == 5) {
-                column.setPreferredWidth(80);
+                column.setPreferredWidth(120); // Alamat Pasien
             } else if (i == 6) {
-                column.setPreferredWidth(80);
+                column.setPreferredWidth(80); // Penanggung Jawab
             } else if (i == 7) {
-                column.setPreferredWidth(150);
+                column.setPreferredWidth(80); // Hubungan P.J.
             } else if (i == 8) {
-                column.setPreferredWidth(75);
+                column.setPreferredWidth(80); // Jenis Bayar
             } else if (i == 9) {
-                column.setPreferredWidth(90);
+                column.setPreferredWidth(75); // Kamar
             } else if (i == 10) {
-                column.setPreferredWidth(90);
+                column.setPreferredWidth(90); // Tarif Kamar
             } else if (i == 11) {
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(90); // Diagnosa Awal
             } else if (i == 12) {
-                column.setPreferredWidth(60);
+                column.setPreferredWidth(70); // Diagnosa Akhir
             } else if (i == 13) {
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(60); // Tgl.Masuk
             } else if (i == 14) {
-                column.setPreferredWidth(60);
+                column.setPreferredWidth(70); // Jam Masuk
             } else if (i == 15) {
-                column.setPreferredWidth(80);
+                column.setPreferredWidth(60); // Tgl.Keluar
             } else if (i == 16) {
-                column.setPreferredWidth(75);
+                column.setPreferredWidth(80); // Jam Keluar
             } else if (i == 17) {
-                column.setPreferredWidth(40);
+                column.setPreferredWidth(75); // Ttl.Biaya
             } else if (i == 18) {
-                column.setPreferredWidth(130);
+                column.setPreferredWidth(40); // Stts.Pulang
             } else if (i == 19) {
-                column.setMinWidth(0);
+                column.setPreferredWidth(40); // Lama
+            } else if (i == 20) {
+                column.setMinWidth(0); // Dokter P.J. (hidden)
                 column.setMaxWidth(0);
             } else if (i == 21) {
-                column.setPreferredWidth(60);
+                column.setPreferredWidth(100); // Kamar
+            } else if (i == 22) {
+                column.setPreferredWidth(80); // Status Bayar
+            } else if (i == 23) {
+                column.setPreferredWidth(60); // Agama
             }
         }
         tbKamIn.setDefaultRenderer(Object.class, new WarnaTableKamarInap());
@@ -6825,6 +6831,30 @@ public class DlgKamarInap extends javax.swing.JDialog {
 
             if (!resumeAda) {
                 JOptionPane.showMessageDialog(null, "Maaf, pasien ini belum memiliki resume medis!\nSilakan lengkapi resume terlebih dahulu sebelum memulangkan pasien.");
+
+                // Buka form RMDataResumePasienRanap untuk melengkapi resume
+                javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                        RMDataResumePasienRanap resume = new RMDataResumePasienRanap(null, false);
+                        resume.isCek();
+                        resume.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+                        resume.setLocationRelativeTo(internalFrame1);
+                        if (R1.isSelected() == true) {
+                            resume.setNoRm(norawat.getText(), new Date());
+                        } else if (R2.isSelected() == true) {
+                            resume.setNoRm(norawat.getText(), DTPCari2.getDate());
+                        } else if (R3.isSelected() == true) {
+                            resume.setNoRm(norawat.getText(), DTPCari4.getDate());
+                        }
+                        resume.tampil();
+                        resume.setVisible(true);
+                        resume.toFront();
+                        resume.requestFocus();
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                });
+
                 tbKamIn.requestFocus();
                 return;
             }
@@ -7602,8 +7632,8 @@ private void MnRawatInapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 } else if (R3.isSelected() == true) {
                     billing.rawatinap.setNoRm(norawat.getText(), DTPCari3.getDate(), DTPCari4.getDate());
                 }
-                billing.rawatinap.setKamar(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString());
-                billing.rawatinap.setJenisBayar(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 7).toString());
+                billing.rawatinap.setKamar(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).toString()); // Index 9: Kamar (7 + 2)
+                billing.rawatinap.setJenisBayar(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString()); // Index 8: Jenis Bayar (6 + 2)
                 billing.rawatinap.setVisible(true);
             }
         }
@@ -7978,11 +8008,11 @@ private void MnDietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
                 rawatinap.emptTeks();
                 rawatinap.isCek();
                 if (R1.isSelected() == true) {
-                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), new Date(), new Date());
+                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), new Date(), new Date());
                 } else if (R2.isSelected() == true) {
-                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), DTPCari1.getDate(), DTPCari2.getDate());
+                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), DTPCari1.getDate(), DTPCari2.getDate());
                 } else if (R3.isSelected() == true) {
-                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), DTPCari3.getDate(), DTPCari4.getDate());
+                    rawatinap.setNoRm(TNoRwCari.getText(), TNoRMCari.getText() + " " + TPasienCari.getText(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).toString(), tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString(), DTPCari3.getDate(), DTPCari4.getDate());
                 }
                 rawatinap.setVisible(true);
             }
@@ -8399,66 +8429,66 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                                 + TJmlHaripindah.getText() + "','" + ttlbiayapindah.getText() + "','-'", "No.Rawat");
                         Sequel.mengedit("kamar", "kd_kamar='" + kdkamarpindah.getText() + "'", "status='ISI'");
                         Sequel.queryu("delete from kamar_inap where no_rawat='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString()
-                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()
-                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'");
-                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()
+                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'");
+                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     } else if (Rganti2.isSelected() == true) {
                         Sequel.queryu("update kamar_inap set kd_kamar='" + kdkamarpindah.getText() + "',trf_kamar='" + TTarifpindah.getText() + "',"
                                 + "lama='" + TJmlHaripindah.getText() + "',ttl_biaya='" + ttlbiayapindah.getText()
                                 + "' where no_rawat='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString()
-                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()
-                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'");
+                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()
+                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'");
                         Sequel.mengedit("kamar", "kd_kamar='" + kdkamarpindah.getText() + "'", "status='ISI'");
-                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     } else if (Rganti3.isSelected() == true) {
                         i = 1;
-                        kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString());
+                        kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString());
                         isKmr();
                         if (hariawal.equals("Yes")) {
                             Sequel.cariIsi("select (if(to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString()
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
                                     + "')=0,if(time_to_sec('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')>(3600*"
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')>(3600*"
                                     + lama + "),1,0),to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
-                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'))+1) as lama", TJmlHari);
+                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'))+1) as lama", TJmlHari);
                         } else {
                             Sequel.cariIsi("select if(to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString()
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
                                     + "')=0,if(time_to_sec('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')>(3600*"
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')>(3600*"
                                     + lama + "),1,0),to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
-                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')) as lama", TJmlHari);
+                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')) as lama", TJmlHari);
                         }
 
                         isjml();
                         Sequel.mengedit("kamar_inap", "no_rawat='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString()
-                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()
-                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'",
+                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()
+                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'",
                                 "trf_kamar='" + TTarif.getText() + "',tgl_keluar='" + CmbTahunpindah.getSelectedItem() + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                 + "',jam_keluar='" + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
                                 + "',lama='" + TJmlHari.getText() + "',ttl_biaya='" + ttlbiaya.getText() + "',stts_pulang='Pindah Kamar'");
-                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                         Sequel.menyimpan("kamar_inap", "'" + norawatpindah.getText() + "','"
                                 + kdkamarpindah.getText() + "','" + TTarifpindah.getText() + "','"
                                 + diagnosaawal.getText() + "','" + diagnosaakhir.getText() + "','"
@@ -8468,40 +8498,40 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                         Sequel.mengedit("kamar", "kd_kamar='" + kdkamarpindah.getText() + "'", "status='ISI'");
                     } else if (Rganti4.isSelected() == true) {
                         i = 1;
-                        kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString());
+                        kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString());
                         isKmr();
                         if (hariawal.equals("Yes")) {
                             Sequel.cariIsi("select (if(to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString()
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
                                     + "')=0,if(time_to_sec('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')>(3600*"
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')>(3600*"
                                     + lama + "),1,0),to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
-                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'))+1) as lama", TJmlHari);
+                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'))+1) as lama", TJmlHari);
                         } else {
                             Sequel.cariIsi("select if(to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString()
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
                                     + "')=0,if(time_to_sec('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem()
-                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')>(3600*"
+                                    + ":" + cmbDtkpindah.getSelectedItem() + "')-time_to_sec('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')>(3600*"
                                     + lama + "),1,0),to_days('" + CmbTahunpindah.getSelectedItem()
                                     + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                     + " " + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
-                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "')) as lama", TJmlHari);
+                                    + "')-to_days('" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                    + " " + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "')) as lama", TJmlHari);
                         }
 
                         DecimalFormat df2 = new DecimalFormat("####");
@@ -8516,13 +8546,13 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                             ttlbiaya.setText(df2.format(x * y));
                         }
                         Sequel.mengedit("kamar_inap", "no_rawat='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString()
-                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()
-                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()
-                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString() + "'",
+                                + "' and kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()
+                                + "' and tgl_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()
+                                + "' and jam_masuk='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString() + "'",
                                 "trf_kamar='" + TTarifpindah.getText() + "',tgl_keluar='" + CmbTahunpindah.getSelectedItem() + "-" + CmbBlnpindah.getSelectedItem() + "-" + CmbTglpindah.getSelectedItem()
                                 + "',jam_keluar='" + cmbJampindah.getSelectedItem() + ":" + cmbMntpindah.getSelectedItem() + ":" + cmbDtkpindah.getSelectedItem()
                                 + "',ttl_biaya='" + ttlbiaya.getText() + "',lama='" + TJmlHari.getText() + "',stts_pulang='Pindah Kamar'");
-                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                        Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                         Sequel.menyimpan("kamar_inap", "'" + norawatpindah.getText() + "','"
                                 + kdkamarpindah.getText() + "','" + TTarifpindah.getText() + "','"
                                 + diagnosaawal.getText() + "','"
@@ -8724,7 +8754,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Sehat'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Sehat", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8746,7 +8776,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Rujuk'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Rujuk", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8768,7 +8798,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='APS'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("APS", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8790,7 +8820,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='+'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("+", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8812,7 +8842,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Meninggal'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Meninggal", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8834,7 +8864,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Sembuh'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Sembuh", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8856,7 +8886,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Membaik'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Membaik", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -8878,7 +8908,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     tbKamIn.requestFocus();
                 } else {
                     Sequel.mengedit("kamar_inap", "no_rawat='" + norawat.getText() + "' and kd_kamar='" + kdkamar.getText() + "' and tgl_masuk='" + TIn.getText() + "' and jam_masuk='" + JamMasuk.getText() + "'", "stts_pulang='Pulang Paksa'");
-                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString() + "'", "status='KOSONG'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString() + "'", "status='KOSONG'");
                     tbKamIn.setValueAt("Pulang Paksa", tbKamIn.getSelectedRow(), 16);
                 }
             }
@@ -9760,7 +9790,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                                 dlgki.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                                 dlgki.setLocationRelativeTo(internalFrame1);
                                 dlgki.isCek();
-                                dlgki.setNoRm(rs2.getString("no_rawat2"), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()), "1. Ranap", "", "");
+                                dlgki.setNoRm(rs2.getString("no_rawat2"), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()), "1. Ranap", "", "");
                                 dlgki.setVisible(true);
                                 this.setCursor(Cursor.getDefaultCursor());
                             } else {
@@ -9787,7 +9817,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     dlgki.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                     dlgki.setLocationRelativeTo(internalFrame1);
                     dlgki.isCek();
-                    dlgki.setNoRm(norawat.getText(), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()), "1. Ranap", "", "");
+                    dlgki.setNoRm(norawat.getText(), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()), "1. Ranap", "", "");
                     dlgki.setVisible(true);
                     this.setCursor(Cursor.getDefaultCursor());
                 }
@@ -12811,7 +12841,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                                 param.put("lahir", Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=?", rs2.getString("no_rkm_medis")));
                                 param.put("norm", rs2.getString("no_rkm_medis"));
                                 param.put("ruang", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString().replaceAll("  ", " "));
-                                param.put("kelas", Sequel.cariIsi("select kamar.kelas from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where kamar.kd_kamar=? ", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()));
+                                param.put("kelas", Sequel.cariIsi("select kamar.kelas from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where kamar.kd_kamar=? ", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()));
                                 param.put("tanggaldaftar", Sequel.cariIsi("select DATE_FORMAT(reg_periksa.tgl_registrasi,'%d-%m-%Y') from reg_periksa where reg_periksa.no_rawat=?", rs2.getString("no_rawat2")));
                                 param.put("jamdaftar", Sequel.cariIsi("select reg_periksa.jam_reg from reg_periksa where reg_periksa.no_rawat=?", rs2.getString("no_rawat2")));
                                 param.put("noreg", Sequel.cariIsi("select reg_periksa.no_reg from reg_periksa where reg_periksa.no_rawat=?", rs2.getString("no_rawat2")));
@@ -12885,7 +12915,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                         param.put("lahir", Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=?", TNoRMCari.getText()));
                         param.put("norm", TNoRMCari.getText());
                         param.put("ruang", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 8).toString().replaceAll("  ", " "));
-                        param.put("kelas", Sequel.cariIsi("select kamar.kelas from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where kamar.kd_kamar=? ", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString()));
+                        param.put("kelas", Sequel.cariIsi("select kamar.kelas from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where kamar.kd_kamar=? ", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()));
                         param.put("tanggaldaftar", Sequel.cariIsi("select DATE_FORMAT(reg_periksa.tgl_registrasi,'%d-%m-%Y') from reg_periksa where reg_periksa.no_rawat=?", TNoRwCari.getText()));
                         param.put("jamdaftar", Sequel.cariIsi("select reg_periksa.jam_reg from reg_periksa where reg_periksa.no_rawat=?", TNoRwCari.getText()));
                         param.put("noreg", Sequel.cariIsi("select reg_periksa.no_reg from reg_periksa where reg_periksa.no_rawat=?", TNoRwCari.getText()));
@@ -13368,7 +13398,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                                 dlgki.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                                 dlgki.setLocationRelativeTo(internalFrame1);
                                 dlgki.isCek();
-                                dlgki.setNoRm3(rs2.getString("no_rawat2"), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()));
+                                dlgki.setNoRm3(rs2.getString("no_rawat2"), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()));
                                 dlgki.setVisible(true);
                                 this.setCursor(Cursor.getDefaultCursor());
                             } else {
@@ -13394,7 +13424,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     dlgki.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
                     dlgki.setLocationRelativeTo(internalFrame1);
                     dlgki.isCek();
-                    dlgki.setNoRm3(norawat.getText(), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()));
+                    dlgki.setNoRm3(norawat.getText(), Valid.SetTgl2(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()));
                     dlgki.setVisible(true);
                     this.setCursor(Cursor.getDefaultCursor());
                 }
@@ -19221,7 +19251,7 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         Valid.tabelKosong(tabMode);
         try {
             ps = koneksi.prepareStatement(
-                    "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,bridging_sep.no_sep,bridging_sep.jnspelayanan,pasien.nm_pasien,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat,reg_periksa.p_jawab,reg_periksa.hubunganpj,"
+                    "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,bridging_sep.no_sep,bridging_sep.jnspelayanan,bridging_sep.klsrawat,pasien.nm_pasien,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat,reg_periksa.p_jawab,reg_periksa.hubunganpj,"
                     + "penjab.png_jawab,concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal) as kamar,kamar_inap.trf_kamar,kamar_inap.diagnosa_awal,kamar_inap.diagnosa_akhir,"
                     + "kamar_inap.tgl_masuk,kamar_inap.jam_masuk,if(kamar_inap.tgl_keluar='0000-00-00','',kamar_inap.tgl_keluar) as tgl_keluar,if(kamar_inap.jam_keluar='00:00:00','',kamar_inap.jam_keluar) as jam_keluar,"
                     + "kamar_inap.ttl_biaya,kamar_inap.stts_pulang,kamar_inap.lama,dokter.nm_dokter,kamar_inap.kd_kamar,reg_periksa.kd_pj,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,reg_periksa.status_bayar, "
@@ -19236,8 +19266,21 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     // Ambil No. SEP dari bridging_sep (hanya SEP rawat inap karena sudah difilter di JOIN)
                     String noSEP = rs.getString("no_sep") != null ? rs.getString("no_sep") : "";
 
+                    // Format Kelas
+                    String kelasRaw = rs.getString("klsrawat");
+                    String kelas = "";
+                    if (kelasRaw != null) {
+                        if (kelasRaw.equals("1")) {
+                            kelas = "Kelas 1";
+                        } else if (kelasRaw.equals("2")) {
+                            kelas = "Kelas 2";
+                        } else if (kelasRaw.equals("3")) {
+                            kelas = "Kelas 3";
+                        }
+                    }
+
                     tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), noSEP, rs.getString("nm_pasien") + " (" + rs.getString("umur") + ")",
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), noSEP, kelas, rs.getString("nm_pasien") + " (" + rs.getString("umur") + ")",
                         rs.getString("alamat"), rs.getString("p_jawab"), rs.getString("hubunganpj"), rs.getString("png_jawab"),
                         rs.getString("kamar"), Valid.SetAngka(rs.getDouble("trf_kamar")), rs.getString("diagnosa_awal"),
                         rs.getString("diagnosa_akhir"), rs.getString("tgl_masuk"), rs.getString("jam_masuk"), rs.getString("tgl_keluar"),
@@ -19254,12 +19297,12 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                         rs2 = psanak.executeQuery();
                         if (rs2.next()) {
                             tabMode.addRow(new String[]{
-                                "", rs2.getString("no_rkm_medis"), "", rs2.getString("nm_pasien") + " (" + rs2.getString("umur") + ")",
-                                rs.getString("alamat"), rs.getString("p_jawab"), rs.getString("hubunganpj"), rs.getString("png_jawab"),
+                                "", rs2.getString("no_rkm_medis"), "", "", rs2.getString("nm_pasien") + " (" + rs2.getString("umur") + ")",
+                                rs2.getString("alamat"), rs.getString("p_jawab"), rs.getString("hubunganpj"), rs.getString("png_jawab"),
                                 rs.getString("kamar"), Valid.SetAngka(rs.getDouble("trf_kamar") * (persenbayi / 100)), "",
                                 "", rs.getString("tgl_masuk"), rs.getString("jam_masuk"), rs.getString("tgl_keluar"),
                                 rs.getString("jam_keluar"), Valid.SetAngka(rs.getDouble("ttl_biaya") * (persenbayi / 100)), rs.getString("stts_pulang"),
-                                rs.getString("lama"), rs.getString("nm_dokter"), rs.getString("kd_kamar"), rs.getString("status_bayar")
+                                rs.getString("lama"), rs.getString("nm_dokter"), rs.getString("kd_kamar"), rs.getString("status_bayar"), ""
                             });
                         }
                     } catch (Exception ex) {
@@ -19323,21 +19366,21 @@ private void MnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         if (tbKamIn.getSelectedRow() != -1) {
             norawat.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
             TNoRM.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).toString());
-            TPasien.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).toString());
+            TPasien.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 4).toString()); // Index 4: Nama Pasien (setelah No SEP & Kelas)
             TNoRwCari.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
             TNoRMCari.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).toString());
-            TPasienCari.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).toString());
+            TPasienCari.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 4).toString()); // Index 4: Nama Pasien
             norawatpindah.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
             TNoRMpindah.setText(TNoRM.getText());
             TPasienpindah.setText(TPasien.getText());
-            kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 20).toString());
-            diagnosaawal.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString());
-            diagnosaakhir.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 11).toString());
-            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString());
-            JamMasuk.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString());
-            TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString());
-            ttlbiaya.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 16).toString());
-            cmbStatus.setSelectedItem(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 17).toString());
+            kdkamar.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 21).toString()); // Index 21: Kamar (19 + 2)
+            diagnosaawal.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 11).toString()); // Index 11: Diagnosa Awal (9 + 2)
+            diagnosaakhir.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString()); // Index 12: Diagnosa Akhir (10 + 2)
+            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 13).toString()); // Index 13: Tgl.Masuk (11 + 2)
+            JamMasuk.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 14).toString()); // Index 14: Jam Masuk (12 + 2)
+            TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 15).toString()); // Index 15: Tgl.Keluar (13 + 2) - FIX BUG!
+            ttlbiaya.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 17).toString()); // Index 17: Ttl.Biaya (15 + 2)
+            cmbStatus.setSelectedItem(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 18).toString()); // Index 18: Stts.Pulang (16 + 2)
         }
     }
 

@@ -44,7 +44,6 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -700,7 +699,6 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         initComponents_Part4();
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     private void initComponents_Part1() {
         buttonGroup1 = new javax.swing.ButtonGroup();
@@ -6478,7 +6476,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         panelBiasa2.setLayout(null);
 
         TglSakit1.setForeground(new java.awt.Color(50, 70, 50));
-        TglSakit1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-10-2025" }));
+        TglSakit1.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"27-10-2025"}));
         TglSakit1.setDisplayFormat("dd-MM-yyyy");
         TglSakit1.setName("TglSakit1"); // NOI18N
         TglSakit1.setOpaque(false);
@@ -6525,7 +6523,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         jLabel32.setBounds(176, 10, 20, 23);
 
         TglSakit2.setForeground(new java.awt.Color(50, 70, 50));
-        TglSakit2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-10-2025" }));
+        TglSakit2.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"27-10-2025"}));
         TglSakit2.setDisplayFormat("dd-MM-yyyy");
         TglSakit2.setName("TglSakit2"); // NOI18N
         TglSakit2.setOpaque(false);
@@ -6839,7 +6837,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(70, 23));
         panelGlass8.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-10-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"27-10-2025"}));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -6852,7 +6850,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(23, 23));
         panelGlass8.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-10-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"27-10-2025"}));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -6864,7 +6862,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         jLabel12.setPreferredSize(new java.awt.Dimension(120, 23));
         panelGlass8.add(jLabel12);
 
-        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "Belum", "Sudah", "Batal", "Berkas Diterima", "Dirujuk", "Meninggal", "Dirawat", "Pulang Paksa" }));
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Semua", "Belum", "Sudah", "Batal", "Berkas Diterima", "Dirujuk", "Meninggal", "Dirawat", "Pulang Paksa"}));
         cmbStatus.setName("cmbStatus"); // NOI18N
         cmbStatus.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(cmbStatus);
@@ -6874,7 +6872,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         jLabel20.setPreferredSize(new java.awt.Dimension(120, 23));
         panelGlass8.add(jLabel20);
 
-        cmbStatusBayar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "Sudah Bayar", "Belum Bayar" }));
+        cmbStatusBayar.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Semua", "Sudah Bayar", "Belum Bayar"}));
         cmbStatusBayar.setName("cmbStatusBayar"); // NOI18N
         cmbStatusBayar.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(cmbStatusBayar);
@@ -20246,13 +20244,20 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
                 MnKamarInap1.setEnabled(false);
             }
         }
-
+        /*
         try {
             namadokter = koneksiDB.DOKTERAKTIFKASIRRALAN();
         } catch (Exception e) {
             namadokter = "";
         }
-
+         */
+        try {
+            //   namadokter=koneksiDB.DOKTERAKTIFKASIRRALAN();
+            namadokter = Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?", akses.getkode());
+        } catch (Exception e) {
+            namadokter = "";
+        }
+        
         if (!namadokter.equals("")) {
             if (akses.getkode().equals("Admin Utama")) {
                 CrPtg.setText("");

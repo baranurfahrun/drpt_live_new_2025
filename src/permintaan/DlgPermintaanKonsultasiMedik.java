@@ -418,7 +418,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         label1.setBounds(210, 20, 55, 23);
 
         TanggalJawab.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalJawab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-08-2025 13:53:11" }));
+        TanggalJawab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-09-2025 11:52:19" }));
         TanggalJawab.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalJawab.setName("TanggalJawab"); // NOI18N
         TanggalJawab.setOpaque(false);
@@ -718,7 +718,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(170, 23));
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-08-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-09-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -736,7 +736,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(30, 23));
         panelCari.add(jLabel25);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-08-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-09-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -840,7 +840,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         jLabel9.setBounds(415, 40, 90, 23);
 
         TanggalPermintaan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPermintaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-08-2025 13:53:10" }));
+        TanggalPermintaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-09-2025 11:52:19" }));
         TanggalPermintaan.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPermintaan.setName("TanggalPermintaan"); // NOI18N
         TanggalPermintaan.setOpaque(false);
@@ -1177,12 +1177,13 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         if (no == null) {
             no = "";
         }
-        no = no.replaceAll("[^0-9+]", "").trim(); 
-        if (no.startsWith("0")) {
+        no = no.replaceAll("[^0-9+]", "").trim();
+        // Konversi nomor telepon jika diawali dengan 08 menjadi 62
+        if (no.startsWith("08")) {
             no = "62" + no.substring(1);
         }
         if (no.startsWith("+")) {
-            no = no.substring(1); 
+            no = no.substring(1);
         }
         return no;
     }
@@ -1191,6 +1192,12 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Nomor WA tujuan kosong, pesan tidak dikirim.");
             return;
         }
+
+        // Konversi nomor telepon jika diawali dengan 08 menjadi 62
+        if (nowa.startsWith("08")) {
+            nowa = "62" + nowa.substring(1);
+        }
+
         PreparedStatement psWa = null;
         try {
             if (koneksiwa == null || koneksiwa.isClosed()) {
@@ -1260,7 +1267,8 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
                 + TanggalPermintaan.getSelectedItem().toString().substring(11, 19);
 
         String nowa = (NoHapeWa == null) ? "" : NoHapeWa.trim();
-        if (nowa.startsWith("0")) {
+        // Konversi nomor telepon jika diawali dengan 08 menjadi 62
+        if (nowa.startsWith("08")) {
             nowa = "62" + nowa.substring(1);
         }
         if (nowa.equals("")) {

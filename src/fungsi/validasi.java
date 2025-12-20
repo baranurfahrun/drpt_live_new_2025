@@ -965,11 +965,10 @@ public void MyReportPDFqryUpload(String reportName, String reportDirName, String
                 jasperViewer.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);
                 jasperViewer.setLocationRelativeTo(null);
                 jasperViewer.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize window
-                jasperViewer.setAlwaysOnTop(true); // Agar window report selalu di depan
                 jasperViewer.setVisible(true);
                 jasperViewer.toFront(); // Pastikan window di depan
                 jasperViewer.requestFocus(); // Focus ke window report
-                // Set always on top setelah visible untuk memastikan efek
+                // Bring to front after visible
                 java.awt.EventQueue.invokeLater(() -> {
                     jasperViewer.toFront();
                     jasperViewer.repaint();
