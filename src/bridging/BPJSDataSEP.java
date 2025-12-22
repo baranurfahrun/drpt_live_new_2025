@@ -3226,7 +3226,23 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             if (SimpanAntrianOnSite() == true) {
                                 insertSEP();
                             } else {
-                                JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                // KODE ORIGINAL (DIKOMEN - Validasi bergantung pada form dan setting)
+                                // JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+
+                                // KODE BARU: Validasi bergantung pada form dan setting
+                                if (akses.getform().equals("DlgReg")) {
+                                    // Di DlgReg, validasi selalu berlaku
+                                    JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                } else if (akses.getform().equals("DlgIGD")) {
+                                    // Di DlgIGD, validasi bergantung pada setting ADDANTRIANAPIMOBILEJKNIGD
+                                    if (koneksiDB.ADDANTRIANAPIMOBILEJKNIGD().equals("yes")) {
+                                        // Jika setting = yes, tampilkan error
+                                        JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                    } else {
+                                        // Jika setting = no, skip validasi dan tetap insert SEP
+                                        insertSEP();
+                                    }
+                                }
                             }
                         } else {
                             insertSEP();
@@ -3241,7 +3257,23 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             if (SimpanAntrianOnSite() == true) {
                                 insertSEP();
                             } else {
-                                JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                // KODE ORIGINAL (DIKOMEN - Validasi bergantung pada form dan setting)
+                                // JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+
+                                // KODE BARU: Validasi bergantung pada form dan setting
+                                if (akses.getform().equals("DlgReg")) {
+                                    // Di DlgReg, validasi selalu berlaku
+                                    JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                } else if (akses.getform().equals("DlgIGD")) {
+                                    // Di DlgIGD, validasi bergantung pada setting ADDANTRIANAPIMOBILEJKNIGD
+                                    if (koneksiDB.ADDANTRIANAPIMOBILEJKNIGD().equals("yes")) {
+                                        // Jika setting = yes, tampilkan error
+                                        JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                    } else {
+                                        // Jika setting = no, skip validasi dan tetap insert SEP
+                                        insertSEP();
+                                    }
+                                }
                             }
                         } else {
                             insertSEP();

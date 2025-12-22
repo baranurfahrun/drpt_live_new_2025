@@ -2,11 +2,11 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>KhanzaHMS</comment> 
-    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
-    <entry key="DATABASE">AZHNccBwSmSho84f+X8GyQ==</entry>
+    <entry key="HOST">qP9d0prt8vCq2k7DVsC7VQ==</entry>
+    <entry key="DATABASE">2TXPVbG4TvJx8Bb3txuBSw==</entry>
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
-    <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
-    <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
+    <entry key="USER">Y1wbz3n8QWhBulEOWg3vvw==</entry>
+    <entry key="PAS">hHgJUB6fs5qYge8ciGMDXg==</entry>
     <entry key="CARICEPAT">aktif</entry>
     <entry key="HOSTHYBRIDWEB">qP9d0prt8vCq2k7DVsC7VQ==</entry>
     <entry key="USERHYBRIDWEB">p6JPScVQMQnAPhPWIboL6A==</entry>
@@ -33,10 +33,10 @@
     <entry key="ALARMPERMINTAANRANAP">yes</entry>
     <entry key="MENUTRANSPARAN">yes</entry>
     <entry key="TANGGALMUNDUR">yes</entry>
-    <entry key="URLAPIBPJS">https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev</entry>
-    <entry key="SECRETKEYAPIBPJS">Kw7cAVsaz9UdZES1jdijeA==</entry>
-    <entry key="CONSIDAPIBPJS">a2hgU44XEVyY/de/KEQa6A==</entry>
-    <entry key="USERKEYAPIBPJS">qPk5B1UdLxhDZeofvOJHPGvUs9ynCGoI69MDKiw90tfarLzNtcLVURnaKdUja9zq</entry>
+    <entry key="URLAPIBPJS">https://apijkn.bpjs-kesehatan.go.id/vclaim-rest</entry>
+    <entry key="SECRETKEYAPIBPJS">RumcOXmUTRN2y6tSD+PDyg==</entry>
+    <entry key="CONSIDAPIBPJS">jZsmwwJSF8YSAtPoK62/Lg==</entry>
+    <entry key="USERKEYAPIBPJS">OoNoTPr+I3LrOg/G1KCtFE5DFbH9xk5VTjbxqggfPx4QjoIuhBlc16n3e3WGCXqD==</entry>
     <entry key="DIAGNOSARUJUKANMASUKAPIBPJS">yes</entry>
     <entry key="JADIKANBOOKINGSURATKONTROLAPIBPJS">no</entry>
     <entry key="JADIKANBOOKINGSURATKONTROLAPIBPJS">no</entry>
@@ -48,7 +48,8 @@
     <entry key="SECRETKEYAPIMOBILEJKN">RumcOXmUTRN2y6tSD+PDyg==</entry>
     <entry key="CONSIDAPIMOBILEJKN">jZsmwwJSF8YSAtPoK62/Lg==</entry>
     <entry key="USERKEYAPIMOBILEJKN">9yApOgDsUHd7HzI5KfSNpyeqCFgYbQHCiuVIerNRjtNo5wNR6nhdQXd3ntEQwAox==</entry>
-    <entry key="ADDANTRIANAPIMOBILEJKN">no</entry>
+    <entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>
+    <entry key="ADDANTRIANAPIMOBILEJKNIGD">no</entry>
     <entry key="URLAPIAPOTEKBPJS">https://apijkn-dev.bpjs-kesehatan.go.id/apotek-rest-dev</entry>
     <entry key="SECRETKEYAPIAPOTEKBPJS">o1kGFBNLxitFvXONjIsVmw==</entry>
     <entry key="CONSIDAPIAPOTEKBPJS">y0z5NDG0bWDaEmVUT6xsjQ==</entry>

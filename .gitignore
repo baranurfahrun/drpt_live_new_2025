@@ -5,3 +5,30 @@
 /dist/
 anjunganmandiri/video/*.mp4
 /nbproject/private/
+
+# API Keys dan File Konfigurasi Sensitif
+src/gemini/application.properties
+
+# File credentials lainnya
+*.env
+*.env.local
+*.env.production
+credentials.json
+*.pem
+*.key
+
+# Database password files
+database.properties
+
+# IDE Configuration
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini

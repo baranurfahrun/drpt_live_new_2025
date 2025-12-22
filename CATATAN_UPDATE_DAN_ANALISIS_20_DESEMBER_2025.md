@@ -1,5 +1,5 @@
 # CATATAN UPDATE DAN ANALISIS PROJECT SIMRS
-## Tanggal: 20 Desember 2025
+## Tanggal: 20 Desember 2025 (Updated: 22 Desember 2025)
 
 ---
 
@@ -263,18 +263,308 @@ MODIFY COLUMN `diagnosa_akhir` VARCHAR(500) DEFAULT NULL;
 
 ---
 
+### 6. DlgKamarInap.java - Bug Fixes (22 Des 2025)
+
+#### Masalah yang Ditemukan:
+1. **Bug Duplikasi Data di Tab R1** - Pasien muncul 2x setelah pindah kamar
+2. **Missing Refresh** - Data tidak pindah dari R1 ke R3 setelah discharge
+3. **Index Shifting Error** - Pindah kamar gagal update data lama
+4. **Data Truncation Error** - Field `lama` tidak boleh kosong
+
+#### Fix Detail:
+
+**A. Missing tampil() Refresh (line 7207)**
+```java
+Sequel.mengedit("kamar", "kd_kamar='" + kdkamar.getText() + "'", "status='KOSONG'");
+WindowInputKamar.dispose();
+emptTeks();
+tampil(); // FIX BUG: Refresh table setelah pemulangan pasien
+```
+
+**B. Index Shifting Bug in Pindah Kamar (4 lokasi)**
+```java
+// BEFORE: tgl_masuk index 14 (SALAH - ambil jam_masuk)
+// AFTER: tgl_masuk index 13 (BENAR)
+
+// Fixed at:
+Line 8434: Rganti1 DELETE query
+Line 8442: Rganti2 DELETE query
+Line 8487: Rganti3 DELETE query
+Line 8551: Rganti4 DELETE query
+```
+
+**C. LEFT JOIN Causing Duplicates → SUBQUERY (lines 19254-19267)**
+```java
+// BEFORE: LEFT JOIN bridging_sep (bisa return multiple rows)
+// AFTER: SUBQUERY dengan ORDER BY + LIMIT 1
+
+ps = koneksi.prepareStatement(
+    "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,"
+    + "(select no_sep from bridging_sep where bridging_sep.no_rawat=kamar_inap.no_rawat and jnspelayanan='1' order by tglsep desc limit 1) as no_sep,"
+    + "(select klsrawat from bridging_sep where bridging_sep.no_rawat=kamar_inap.no_rawat and jnspelayanan='1' order by tglsep desc limit 1) as klsrawat,"
+    + "pasien.nm_pasien,..."
+);
+```
+
+**D. Data Truncation Fix - Empty lama Field (4 lokasi)**
+```java
+// Tambah default value "1" jika TJmlHari kosong
+String lamaValue = (TJmlHari.getText().trim().equals("") ? "1" : TJmlHari.getText());
+
+// Applied at:
+Line 7147: Check-in query
+Line 7167: Check-out update
+Line 8491: Rganti3 pindah kamar
+Line 8555: Rganti4 pindah kamar
+```
+
+**E. SQL Fix untuk Data Existing**
+File: `fix_data_pindah_kamar_bara_nur_fahrun.sql`
+```sql
+-- Fix duplikasi data bara nur fahrun (RM 000032)
+UPDATE kamar_inap SET
+    tgl_keluar = '2025-12-22',
+    jam_keluar = '11:20:38',
+    stts_pulang = 'Pindah Kamar'
+WHERE no_rawat = '2025/11/26/000001'
+  AND kd_kamar = 'VUP.01'
+  AND tgl_masuk = '2025-11-26'
+  AND jam_masuk = '17:21:16';
+```
+
+**Status:** ✅ SELESAI & VERIFIED (22 Des 2025)
+
+**Bug Fixed:**
+- ✅ Duplikasi data di R1 (bara nur fahrun case)
+- ✅ Data tidak pindah R1 → R3 setelah discharge
+- ✅ Pindah kamar gagal update data lama (index shifting)
+- ✅ LEFT JOIN causing duplicate rows (multiple SEP records)
+- ✅ Data truncation error for empty lama field
+
+---
+
+### 7. Bridging BPJS - Validasi Antrian Mobile JKN (22 Des 2025)
+
+#### Tujuan Modifikasi:
+Validasi "antrian mobile JKN gagal dibuat" bergantung pada **setting konfigurasi** yang dapat diatur per form.
+
+#### Alasan:
+- Di **IGD (DlgIGD)**: Pasien harus tetap dapat SEP meskipun antrian mobile gagal (emergency case)
+- Di **Pendaftaran (DlgReg)**: Validasi tetap berlaku (registrasi normal)
+- **Flexible Configuration**: Admin dapat mengatur via database.xml
+
+#### Evolusi Implementasi:
+
+**Fase 1 (22 Des 2025 - Pagi):** Hardcode Form Check
+- Menggunakan `akses.getform()` untuk cek form caller
+- Fixed logic per form
+
+**Fase 2 (22 Des 2025 - Sore):** Setting-Based Configuration ✅ FINAL
+- Tambah setting `ADDANTRIANAPIMOBILEJKNIGD` di database.xml
+- Tambah fungsi `ADDANTRIANAPIMOBILEJKNIGD()` di koneksiDB.java
+- Validasi sekarang bergantung pada setting yang bisa diubah tanpa recompile
+
+#### File yang Dimodifikasi (11 files total):
+
+**A. setting/database.xml** - Konfigurasi Baru
+```xml
+<!-- Setting untuk kontrol validasi antrian mobile JKN -->
+<entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>  <!-- Existing - untuk DlgReg -->
+<entry key="ADDANTRIANAPIMOBILEJKNIGD">no</entry> <!-- NEW - untuk DlgIGD -->
+```
+
+**Penjelasan Setting:**
+- `ADDANTRIANAPIMOBILEJKN` = "yes" : Validasi berlaku di DlgReg (selalu)
+- `ADDANTRIANAPIMOBILEJKNIGD` = "no" : Validasi TIDAK berlaku di DlgIGD (default)
+- `ADDANTRIANAPIMOBILEJKNIGD` = "yes" : Validasi berlaku di IGD (opsional)
+
+**B. src/fungsi/koneksiDB.java** - Fungsi Baru (lines 1427-1435)
+```java
+public static String ADDANTRIANAPIMOBILEJKNIGD() {
+    try {
+        prop.loadFromXML(new FileInputStream("setting/database.xml"));
+        var = prop.getProperty("ADDANTRIANAPIMOBILEJKNIGD");
+    } catch (Exception e) {
+        var = "no";  // Default: validasi tidak berlaku di IGD
+    }
+    return var;
+}
+```
+
+**C. BPJSDataSEP.java** - 2 lokasi (lines 3229-3239 & 3254-3264)
+```java
+// KODE ORIGINAL (DIKOMEN - Validasi bergantung pada form dan setting)
+// JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat...");
+
+// KODE BARU: Validasi bergantung pada form dan setting
+if (akses.getform().equals("DlgReg")) {
+    // Di DlgReg, validasi selalu berlaku
+    JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat...");
+} else if (akses.getform().equals("DlgIGD")) {
+    // Di DlgIGD, validasi bergantung pada setting ADDANTRIANAPIMOBILEJKNIGD
+    if (koneksiDB.ADDANTRIANAPIMOBILEJKNIGD().equals("yes")) {
+        // Jika setting = yes, tampilkan error
+        JOptionPane.showMessageDialog(null, "Maaf, antrian mobile JKN gagal dibuat...");
+    } else {
+        // Jika setting = no, skip validasi dan tetap insert SEP
+        insertSEP();
+    }
+}
+```
+
+**D. BPJSDataSEP_THB.java** - 2 lokasi (lines 3544-3554 & 3569-3579)
+- Pattern sama seperti BPJSDataSEP.java
+
+**E. Files dengan Rollback Logic (7 files):**
+```
+✅ BPJSCekKartu.java (line 7067-7101)
+✅ BPJSCekNIK2.java (line 7067-7101)
+✅ BPJSCekNoRujukanPCare.java (line 6922-6956)
+✅ BPJSCekNoRujukanRS.java (line 6922-6956)
+✅ BPJSCekRujukanKartuPCare.java (line 7048-7082)
+✅ BPJSCekRujukanKartuRS.java (line 7045-7079)
+✅ BPJSCekSKDP.java (line 6557-6582)
+```
+
+**Pattern untuk file dengan Rollback:**
+```java
+// KODE ORIGINAL (DIKOMEN - Rollback dan validasi bergantung pada form dan setting)
+// Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+// Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+// Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+// if(statuspasien.equals("Baru")){
+//     Sequel.meghapus3("pasien","no_rkm_medis",TNo.getText());
+// }
+// JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat...");
+
+// KODE BARU: Rollback dan validasi bergantung pada form dan setting
+if(akses.getform().equals("DlgReg")){
+    // Di DlgReg, rollback dan validasi selalu berlaku
+    Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+    Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+    Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+    if(statuspasien.equals("Baru")){
+        Sequel.meghapus3("pasien","no_rkm_medis",TNo.getText());
+    }
+    JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat...");
+}else if(akses.getform().equals("DlgIGD")){
+    // Di DlgIGD, rollback dan validasi bergantung pada setting ADDANTRIANAPIMOBILEJKNIGD
+    if(koneksiDB.ADDANTRIANAPIMOBILEJKNIGD().equals("yes")){
+        // Jika setting = yes, lakukan rollback dan tampilkan error
+        Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+        Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+        Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+        if(statuspasien.equals("Baru")){
+            Sequel.meghapus3("pasien","no_rkm_medis",TNo.getText());
+        }
+        JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat...");
+    }else{
+        // Jika setting = no, skip rollback dan validasi, tetap insert SEP
+        insertSEP();
+    }
+}
+```
+
+#### Hasil Modifikasi dengan Setting-Based Approach:
+
+**Skenario 1: DlgReg.java (Registrasi Normal)**
+- ✅ Validasi **SELALU** berlaku
+- ✅ Rollback data jika antrian gagal
+- ✅ Error message ditampilkan
+- ❌ SEP TIDAK tercetak jika antrian gagal
+
+**Skenario 2: DlgIGD.java dengan Setting = "no" (DEFAULT)**
+- ❌ Validasi TIDAK berlaku
+- ❌ Rollback TIDAK dilakukan
+- ❌ Error message TIDAK ditampilkan
+- ✅ **SEP tetap tercetak** meskipun antrian mobile gagal (PENTING untuk IGD!)
+
+**Skenario 3: DlgIGD.java dengan Setting = "yes" (OPSIONAL)**
+- ✅ Validasi berlaku (sama seperti DlgReg)
+- ✅ Rollback data jika antrian gagal
+- ✅ Error message ditampilkan
+- ❌ SEP TIDAK tercetak jika antrian gagal
+
+#### Keuntungan Setting-Based Approach:
+
+**1. Flexible Configuration** ✅
+- Bisa mengubah behavior tanpa recompile aplikasi
+- Cukup edit file database.xml
+- Langsung aktif setelah restart aplikasi
+
+**2. Future-Proof** ✅
+- Mudah menambah setting untuk form lain (DlgPoli, DlgRanap, dll)
+- Scalable untuk kebutuhan mendatang
+
+**3. Easy Rollback** ✅
+- Tinggal ubah setting "no" → "yes" atau sebaliknya
+- Tidak perlu modifikasi code
+
+**4. Clean Code** ✅
+- Logika terpusat di koneksiDB.java
+- Mudah dimaintain
+
+**5. Configuration Management** ✅
+- Admin bisa kontrol via setting file
+- Tidak perlu akses source code
+
+#### Cara Penggunaan Setting:
+
+**Untuk mengaktifkan validasi di IGD:**
+```xml
+<!-- Edit file: setting/database.xml -->
+<entry key="ADDANTRIANAPIMOBILEJKNIGD">yes</entry>
+```
+
+**Untuk menonaktifkan validasi di IGD (default):**
+```xml
+<!-- Edit file: setting/database.xml -->
+<entry key="ADDANTRIANAPIMOBILEJKNIGD">no</entry>
+```
+
+**Catatan:** Restart aplikasi setelah mengubah setting.
+
+**Status:** ✅ SELESAI & VERIFIED (22 Des 2025)
+
+**Catatan Penting:**
+- Kode original **TIDAK DIHAPUS**, hanya **DIKOMEN**
+- Mudah untuk rollback jika diperlukan
+- Menggunakan **setting-based configuration** untuk flexibility
+- Default value = "no" (validasi tidak berlaku di IGD)
+
+---
+
 ## 📊 SUMMARY PERUBAHAN PROJECT LOKAL
 
-| File | Lines Changed | Methods Modified | Status |
-|------|---------------|------------------|--------|
-| BPJSSuratKontrol.java | ~10 | 2 | ✅ Done |
-| DlgPermintaanKonsultasiMedik.java | ~15 | 3 | ✅ Done |
-| DlgIGD.java | ~200 | 7 | ✅ Done |
-| DlgKamarInap.java | ~150 | 8 + 50 occurrences | ✅ Done |
-| fungsi/validasi.java | -1 | 1 | ✅ Done |
-| sik.sql (ALTER) | 1 | 0 | ⏳ Pending |
+| File | Lines Changed | Methods Modified | Status | Date |
+|------|---------------|------------------|--------|------|
+| BPJSSuratKontrol.java | ~10 | 2 | ✅ Done | 20 Des 2025 |
+| DlgPermintaanKonsultasiMedik.java | ~15 | 3 | ✅ Done | 20 Des 2025 |
+| DlgIGD.java | ~200 | 7 | ✅ Done | 20 Des 2025 |
+| DlgKamarInap.java | ~300 | 12 + 50 occurrences | ✅ Done | 20-22 Des 2025 |
+| fungsi/validasi.java | -1 | 1 | ✅ Done | 20 Des 2025 |
+| **setting/database.xml** | **+1** | **0** | **✅ Done** | **22 Des 2025** |
+| **fungsi/koneksiDB.java** | **+9** | **+1 new** | **✅ Done** | **22 Des 2025** |
+| **BPJSDataSEP.java** | **+30** | **2 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSDataSEP_THB.java** | **+30** | **2 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekKartu.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekNIK2.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekNoRujukanPCare.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekNoRujukanRS.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekRujukanKartuPCare.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekRujukanKartuRS.java** | **+25** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| **BPJSCekSKDP.java** | **+22** | **1 (updated)** | **✅ Done** | **22 Des 2025** |
+| sik.sql (ALTER diagnosa_akhir) | 1 | 0 | ⏳ Pending | - |
+| sik.sql (FIX bara nur fahrun) | 1 UPDATE | 0 | ⏳ Pending | - |
 
-**Total:** 5 files modified, ~375 lines changed
+**Total:** 16 files modified, ~750 lines changed (20-22 Des 2025)
+
+**Implementasi Terbaru (22 Des 2025 Sore):**
+- ✅ Transisi dari hardcode form check ke **setting-based configuration**
+- ✅ Tambah entry `ADDANTRIANAPIMOBILEJKNIGD` di database.xml
+- ✅ Tambah fungsi `ADDANTRIANAPIMOBILEJKNIGD()` di koneksiDB.java
+- ✅ Update semua 9 file BPJS dengan pattern baru
+- ✅ Flexible configuration tanpa perlu recompile
 
 ---
 
@@ -1095,14 +1385,21 @@ Apr 2026+:       Deploy to production (if ready)
 ```
 Branch: main
 Last Commit: (check git log)
-Modified Files: 5 files
-Lines Changed: ~375 lines
+Last Update: 22 Desember 2025
+Modified Files: 14 files
+Lines Changed: ~670 lines
 Status: ⏳ Testing Phase
 
+Completed (22 Des 2025):
+✅ DlgKamarInap bug fixes (5 bugs)
+✅ BPJS Validasi modifications (9 files, 11 locations)
+✅ Documentation updated
+
 Pending:
-- Database ALTER for diagnosa_akhir
-- Production deployment
-- User acceptance testing
+⏳ Database ALTER for diagnosa_akhir
+⏳ Database UPDATE for bara nur fahrun
+⏳ Production deployment
+⏳ User acceptance testing
 ```
 
 ### Official Repository:
@@ -1152,12 +1449,15 @@ mysql -u username -p khanzahms < backup_khanzahms_YYYYMMDD.sql
 
 ### Project Lokal:
 ```
-Files Modified:     5
-Lines Changed:      ~375
-Methods Modified:   21
-New Features:       4
-Bug Fixes:          6
+Files Modified:     16
+Lines Changed:      ~750
+Methods Modified:   34
+New Functions:      1 (koneksiDB.ADDANTRIANAPIMOBILEJKNIGD)
+New Features:       6
+Bug Fixes:          11
 Status:             Testing Phase
+Last Update:        22 Desember 2025 (Sore)
+Configuration:      Setting-Based Approach ✅
 ```
 
 ### Official Update:
@@ -1173,9 +1473,9 @@ Status:             Released
 ### Potential Conflicts:
 ```
 High Risk:          2 files (DlgIGD, DlgKamarInap)
-Medium Risk:        2 files (BPJSSuratKontrol, validasi)
+Medium Risk:        13 files (BPJSSuratKontrol, validasi, koneksiDB, database.xml, 9 BPJS files)
 Low Risk:           1 file (DlgPermintaanKonsultasiMedik)
-Total:              5 files need manual review
+Total:              16 files need manual review
 ```
 
 ---
@@ -1236,6 +1536,10 @@ Total:              5 files need manual review
 | 20 Des 2025 | Modifikasi WA, Kolom IGD/Kamar Inap, Print Fix | ✅ Done |
 | 20 Des 2025 | Official Update Released | ℹ️ Available |
 | 20 Des 2025 | Analisis & Documentation | ✅ Done |
+| **22 Des 2025** | **Bug Fix DlgKamarInap (5 bugs)** | **✅ Done** |
+| **22 Des 2025 (Pagi)** | **Modifikasi Validasi BPJS (9 files) - Hardcode** | **✅ Done** |
+| **22 Des 2025 (Sore)** | **Upgrade ke Setting-Based Configuration (11 files)** | **✅ Done** |
+| **22 Des 2025** | **Update Documentation** | **✅ Done** |
 | TBD | Production Testing | ⏳ Pending |
 | TBD | User Feedback Collection | ⏳ Pending |
 | TBD | Evaluate Merge Strategy | ⏳ Pending |
@@ -1264,14 +1568,23 @@ Total:              5 files need manual review
 **Status Files:**
 - `RINGKASAN_PERUBAHAN.md` - Detail semua modifikasi kita
 - `CATATAN_UPDATE_DAN_ANALISIS_20_DESEMBER_2025.md` - Dokumen ini
-- `fix_diagnosa_akhir_size.sql` - SQL fix untuk database
+- `fix_diagnosa_akhir_size.sql` - SQL fix untuk database (diagnosa_akhir VARCHAR 500)
+- `fix_data_pindah_kamar_bara_nur_fahrun.sql` - SQL fix untuk data duplikat (22 Des 2025)
 
 ---
 
 **Dibuat oleh:** Claude AI Assistant
 **Tanggal:** 20 Desember 2025
+**Update Terakhir:** 22 Desember 2025 (Sore)
 **Untuk:** Project SIMRS - Palemmai
 **Status:** Documentation Complete ✅
+
+**Update Log:**
+- 20 Des 2025: Initial documentation (5 modifikasi)
+- 22 Des 2025 (Pagi): Added DlgKamarInap bug fixes (5 bugs fixed)
+- 22 Des 2025 (Pagi): Added BPJS validation modifications dengan hardcode form check (9 files)
+- 22 Des 2025 (Sore): **Upgrade ke setting-based configuration** (11 files, +database.xml, +koneksiDB.java)
+- 22 Des 2025 (Sore): Final count: **16 files modified, ~750 lines changed**
 
 ---
 

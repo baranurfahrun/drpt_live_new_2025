@@ -6554,10 +6554,32 @@ public final class BPJSCekSKDP extends javax.swing.JDialog {
                         if(SimpanAntrianOnSite()==true){
                             insertSEP();
                         }else{
-                            Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
-                            Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
-                            Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
-                            JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                            // KODE ORIGINAL (DIKOMEN - Rollback dan validasi bergantung pada form dan setting)
+                            // Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+                            // Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+                            // Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+                            // JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+
+                            // KODE BARU: Rollback dan validasi bergantung pada form dan setting
+                            if(akses.getform().equals("DlgReg")){
+                                // Di DlgReg, rollback dan validasi selalu berlaku
+                                Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+                                Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+                                Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+                                JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                            }else if(akses.getform().equals("DlgIGD")){
+                                // Di DlgIGD, rollback dan validasi bergantung pada setting ADDANTRIANAPIMOBILEJKNIGD
+                                if(koneksiDB.ADDANTRIANAPIMOBILEJKNIGD().equals("yes")){
+                                    // Jika setting = yes, lakukan rollback dan tampilkan error
+                                    Sequel.meghapus3("diagnosa_pasien","no_rawat",TNoRw.getText());
+                                    Sequel.meghapus3("rujuk_masuk","no_rawat",TNoRw.getText());
+                                    Sequel.meghapus3("reg_periksa","no_rawat",TNoRw.getText());
+                                    JOptionPane.showMessageDialog(null,"Maaf, antrian mobile JKN gagal dibuat. Silahkan cek jadwal dokter / Nomor Referensi..!!");
+                                }else{
+                                    // Jika setting = no, skip rollback dan validasi, tetap insert SEP
+                                    insertSEP();
+                                }
+                            }
                         }
                     }else{
                         insertSEP();

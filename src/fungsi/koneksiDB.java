@@ -1424,6 +1424,16 @@ public class koneksiDB {
         return var;
     }
 
+    public static String ADDANTRIANAPIMOBILEJKNIGD() {
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            var = prop.getProperty("ADDANTRIANAPIMOBILEJKNIGD");
+        } catch (Exception e) {
+            var = "no";
+        }
+        return var;
+    }
+
     public static String JADIKANBOOKINGSURATKONTROLAPIBPJS() {
         try {
             prop.loadFromXML(new FileInputStream("setting/database.xml"));

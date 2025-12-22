@@ -1,0 +1,20 @@
+# Konfigurasi Google Gemini API
+# Copy file ini menjadi 'application.properties' dan isi dengan API key Anda
+
+# Dapatkan API key dari: https://aistudio.google.com/app/apikey
+gemini.api.key=MASUKKAN_API_KEY_ANDA_DISINI
+
+# URL API Gemini (tidak perlu diubah)
+gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
+# URL untuk upload file (tidak perlu diubah)
+gemini.api.upload.url=https://generativelanguage.googleapis.com/upload/v1beta/files
+
+# Timeout dalam detik (opsional, default: 30)
+gemini.timeout.seconds=30
+
+# API Key untuk Google Cloud (jika digunakan)
+api.key=
+
+# Project ID untuk Google Cloud (jika digunakan)
+project.id=
